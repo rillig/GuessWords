@@ -1,0 +1,7 @@
+<resources>
+    <color name="black_overlay">#66000000</color>
+    <color name="term_fg">#00405e</color>
+    <color name="term_bg">#7ad896</color>
+    <color name="forbidden_fg">#00405e</color>
+    <color name="forbidden_bg">#ffc8c1</color>
+</resources>

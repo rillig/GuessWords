@@ -1,0 +1,116 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".CardActivity"
+    tools:showIn="@layout/activity_card">
+
+    <TextView
+        android:id="@+id/term"
+        android:layout_width="match_parent"
+        android:layout_height="128sp"
+        android:background="@color/term_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Gesuchter Begriff"
+        android:textAlignment="gravity"
+        android:textColor="@color/term_fg"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/forbidden1"
+        android:layout_width="match_parent"
+        android:layout_height="64sp"
+        android:background="@color/forbidden_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Verboten 1"
+        android:textAlignment="gravity"
+        android:textColor="@color/forbidden_fg"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/term"/>
+
+    <TextView
+        android:id="@+id/forbidden2"
+        android:layout_width="match_parent"
+        android:layout_height="64sp"
+        android:background="@color/forbidden_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Verboten 2"
+        android:textAlignment="gravity"
+        android:textColor="@color/forbidden_fg"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/forbidden1"/>
+
+    <TextView
+        android:id="@+id/forbidden3"
+        android:layout_width="match_parent"
+        android:layout_height="64sp"
+        android:background="@color/forbidden_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Verboten 3"
+        android:textAlignment="gravity"
+        android:textColor="@color/forbidden_fg"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/forbidden2"/>
+
+    <TextView
+        android:id="@+id/forbidden4"
+        android:layout_width="match_parent"
+        android:layout_height="64sp"
+        android:background="@color/forbidden_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Verboten 4"
+        android:textAlignment="gravity"
+        android:textColor="@color/forbidden_fg"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/forbidden3"/>
+
+    <TextView
+        android:id="@+id/forbidden5"
+        android:layout_width="match_parent"
+        android:layout_height="64sp"
+        android:background="@color/forbidden_bg"
+        android:gravity="center"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text="Verboten 5"
+        android:textAlignment="gravity"
+        android:textColor="@color/forbidden_fg"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/forbidden4"/>
+
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/play_button"/>
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
