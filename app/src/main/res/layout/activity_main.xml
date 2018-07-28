@@ -16,12 +16,20 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/play_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="gotoCard"
             android:text="@string/play_button"/>
+
+        <Button
+            android:id="@+id/new_card_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="newCard"
+            android:text="@string/new_card_button"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

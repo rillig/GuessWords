@@ -4,4 +4,9 @@
     <string name="correct_button">Richtig</string>
     <string name="wrong_button">Falsch</string>
     <string name="skip_button">Nächste</string>
+    <string name="new_card_button">Neue Karte</string>
+    <string name="forbidden_label">Verbotene Begriffe</string>
+    <string name="term_label">Gesuchter Begriff</string>
+    <string name="forbidden_hint">Verbotener Begriff</string>
+    <string name="save_button">Speichern</string>
 </resources>

@@ -14,6 +14,15 @@ class Card(
         val forbidden4: String,
         val forbidden5: String) : Serializable
 
+class UnsavedCard(
+        val language: String,
+        val term: String,
+        val forbidden1: String,
+        val forbidden2: String,
+        val forbidden3: String,
+        val forbidden4: String,
+        val forbidden5: String) : Serializable
+
 enum class Player {
     A, B;
 

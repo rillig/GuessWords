@@ -1,0 +1,109 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditCardActivity">
+
+    <EditText
+        android:id="@+id/term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/term_bg"
+        android:hint="@string/term_label"
+        android:importantForAutofill="no"
+        android:inputType="textAutoCorrect"
+        android:paddingBottom="32sp"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:paddingTop="32sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/forbidden1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/forbidden_hint"
+        android:importantForAutofill="no"
+        android:inputType="textAutoCorrect"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/term"/>
+
+    <EditText
+        android:id="@+id/forbidden2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/forbidden_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forbidden1"/>
+
+    <EditText
+        android:id="@+id/forbidden3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/forbidden_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forbidden2"/>
+
+    <EditText
+        android:id="@+id/forbidden4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/forbidden_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forbidden3"/>
+
+    <EditText
+        android:id="@+id/forbidden5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/forbidden_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingEnd="16sp"
+        android:paddingStart="16sp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forbidden4"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="save"
+            android:text="@string/save_button"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
