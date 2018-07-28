@@ -4,11 +4,15 @@ import java.io.Serializable
 import java.util.UUID
 
 class Card(
-        id: UUID,
-        language: String,
-        searchTerm: String,
-        forbidden: List<String>,
-        labels: List<String> = listOf())
+        val id: Long,
+        val uuid: UUID,
+        val language: String,
+        val term: String,
+        val forbidden1: String,
+        val forbidden2: String,
+        val forbidden3: String,
+        val forbidden4: String,
+        val forbidden5: String) : Serializable
 
 enum class Player {
     A, B;
@@ -28,6 +32,10 @@ class GameState(
     init {
         millisLeft = millisTotal
         remainingCards = cards.toMutableList()
+    }
+
+    fun addCards(cards: List<Card>) {
+        remainingCards += cards
     }
 
     fun correct() {
@@ -53,7 +61,7 @@ class GameState(
         turn = turn.other()
     }
 
-    fun currentCard() = remainingCards.firstOrNull()
+    fun currentCard() = remainingCards.lastOrNull()
 
     fun over() = millisLeft == 0
 

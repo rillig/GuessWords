@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Guess Words</string>
     <string name="play_button">Spielen</string>
+    <string name="correct_button">Richtig</string>
+    <string name="wrong_button">Falsch</string>
+    <string name="skip_button">Nächste</string>
 </resources>

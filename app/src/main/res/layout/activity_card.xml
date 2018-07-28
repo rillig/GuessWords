@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/term"
         android:layout_width="match_parent"
-        android:layout_height="128sp"
+        android:layout_height="96sp"
         android:background="@color/term_bg"
         android:gravity="center"
         android:paddingEnd="16sp"
@@ -20,6 +20,7 @@
         android:textAlignment="gravity"
         android:textColor="@color/term_fg"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -27,15 +28,18 @@
     <TextView
         android:id="@+id/forbidden1"
         android:layout_width="match_parent"
-        android:layout_height="64sp"
+        android:layout_height="80sp"
         android:background="@color/forbidden_bg"
         android:gravity="center"
         android:paddingEnd="16sp"
         android:paddingStart="16sp"
+        android:paddingTop="16sp"
         android:text="Verboten 1"
         android:textAlignment="gravity"
         android:textColor="@color/forbidden_fg"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/term"/>
 
     <TextView
@@ -50,6 +54,8 @@
         android:textAlignment="gravity"
         android:textColor="@color/forbidden_fg"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden1"/>
 
     <TextView
@@ -64,6 +70,8 @@
         android:textAlignment="gravity"
         android:textColor="@color/forbidden_fg"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden2"/>
 
     <TextView
@@ -78,20 +86,25 @@
         android:textAlignment="gravity"
         android:textColor="@color/forbidden_fg"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden3"/>
 
     <TextView
         android:id="@+id/forbidden5"
         android:layout_width="match_parent"
-        android:layout_height="64sp"
+        android:layout_height="80sp"
         android:background="@color/forbidden_bg"
         android:gravity="center"
+        android:paddingBottom="16sp"
         android:paddingEnd="16sp"
         android:paddingStart="16sp"
         android:text="Verboten 5"
         android:textAlignment="gravity"
         android:textColor="@color/forbidden_fg"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden4"/>
 
 
@@ -105,12 +118,28 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/correct_button"
+            android:layout_width="match_parent"
+            android:layout_height="96sp"
             android:layout_weight="1"
-            android:text="@string/play_button"/>
-    </LinearLayout>
+            android:onClick="correctClicked"
+            android:text="@string/correct_button"/>
 
+        <Button
+            android:id="@+id/wrong_button"
+            android:layout_width="match_parent"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="wrongClicked"
+            android:text="@string/wrong_button"/>
+
+        <Button
+            android:id="@+id/skip_button"
+            android:layout_width="match_parent"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="skipClicked"
+            android:text="@string/skip_button"/>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
