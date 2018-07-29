@@ -36,14 +36,14 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
             CREATE TABLE question (
-                uuid TEXT,
-                language TEXT,
-                term TEXT,
-                forbidden1 TEXT,
-                forbidden2 TEXT,
-                forbidden3 TEXT,
-                forbidden4 TEXT,
-                forbidden5 TEXT
+                uuid       TEXT PRIMARY KEY ON CONFLICT REPLACE,
+                language   TEXT NOT NULL,
+                term       TEXT NOT NULL,
+                forbidden1 TEXT NOT NULL,
+                forbidden2 TEXT NOT NULL,
+                forbidden3 TEXT NOT NULL,
+                forbidden4 TEXT NOT NULL,
+                forbidden5 TEXT NOT NULL
             )""")
 
         for (card in predefinedCards()) {
@@ -64,14 +64,11 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
         TODO("not implemented")
     }
 
-    fun add(card: UnsavedCard): Card {
-        return add(writableDatabase, card)
-    }
+    fun add(card: Card) = add(writableDatabase, card)
 
-    fun add(db: SQLiteDatabase, card: UnsavedCard): Card {
-        val uuid = UUID.randomUUID()
-        val id = db.insert("question", null, ContentValues().apply {
-            put("uuid", uuid.toString())
+    fun add(db: SQLiteDatabase, card: Card) {
+        val cv = ContentValues().apply {
+            put("uuid", card.uuid.toString())
             put("language", card.language)
             put("term", card.term)
             put("forbidden1", card.forbidden1)
@@ -79,25 +76,14 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
             put("forbidden3", card.forbidden3)
             put("forbidden4", card.forbidden4)
             put("forbidden5", card.forbidden5)
-        })
-        return Card(
-                id,
-                uuid,
-                card.language,
-                card.term,
-                card.forbidden1,
-                card.forbidden2,
-                card.forbidden3,
-                card.forbidden4,
-                card.forbidden5
-        )
+        }
+        db.insert("question", null, cv)
     }
 
     fun load(language: String): List<Card> {
         val cursor = readableDatabase.query(
                 "question",
                 arrayOf(
-                        "rowid",
                         "uuid",
                         "language",
                         "term",
@@ -107,8 +93,8 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
                         "forbidden4",
                         "forbidden5"
                 ),
-                "language = ?",
-                arrayOf(language),
+                if (language != "") "language = ?" else null,
+                if (language != "") arrayOf(language) else arrayOf(),
                 null,
                 null,
                 null)
@@ -117,15 +103,14 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
         cursor.use {
             while (cursor.moveToNext()) {
                 val card = Card(
-                        cursor.getLong(0),
-                        UUID.fromString(cursor.getString(1)),
+                        UUID.fromString(cursor.getString(0)),
+                        cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
-                        cursor.getString(7),
-                        cursor.getString(8))
+                        cursor.getString(7))
                 cards += card
             }
         }

@@ -1,12 +1,28 @@
 <resources>
     <string name="app_name">Wörter raten</string>
 
+    <string name="import_button">Importieren</string>
+    <string name="export_button">Exportieren</string>
     <string name="new_game_button">Neues Spiel</string>
     <string name="play_button">Spielen</string>
     <string name="new_card_button">Neue Karte</string>
 
+    <plurals name="import_cards_question">
+        <item quantity="one">%d Karte importieren?</item>
+        <item quantity="other">%d Karten importieren?</item>
+    </plurals>
+
+    <string name="csv_uuid">UUID</string>
+    <string name="csv_language">Sprache</string>
+    <string name="csv_term">Gesuchter Begriff</string>
+    <string name="csv_forbidden">Verbotener Begriff</string>
+    <plurals name="exported_cards_notification">
+        <item quantity="one">%d Karte in die Zwischenablage exportiert.</item>
+        <item quantity="other">%d Karten in die Zwischenablage exportiert.</item>
+    </plurals>
+
     <string name="term_label">Gesuchter Begriff</string>
-    <string name="forbidden_hint">Verbotener Begriff</string>
+    <string name="forbidden_label">Verbotener Begriff</string>
     <string name="save_button">Speichern</string>
 
     <plurals name="team_score_label">

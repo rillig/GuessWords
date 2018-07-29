@@ -4,17 +4,7 @@ import java.io.Serializable
 import java.util.UUID
 
 class Card(
-        val id: Long,
         val uuid: UUID,
-        val language: String,
-        val term: String,
-        val forbidden1: String,
-        val forbidden2: String,
-        val forbidden3: String,
-        val forbidden4: String,
-        val forbidden5: String) : Serializable
-
-class UnsavedCard(
         val language: String,
         val term: String,
         val forbidden1: String,
