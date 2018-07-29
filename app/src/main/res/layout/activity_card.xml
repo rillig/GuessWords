@@ -35,7 +35,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progress"/>
+        app:layout_constraintTop_toBottomOf="@id/progress"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/forbidden1"
@@ -52,7 +53,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/term"/>
+        app:layout_constraintTop_toBottomOf="@+id/term"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/forbidden2"
@@ -68,7 +70,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forbidden1"/>
+        app:layout_constraintTop_toBottomOf="@+id/forbidden1"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/forbidden3"
@@ -84,7 +87,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forbidden2"/>
+        app:layout_constraintTop_toBottomOf="@+id/forbidden2"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/forbidden4"
@@ -100,7 +104,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forbidden3"/>
+        app:layout_constraintTop_toBottomOf="@+id/forbidden3"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/forbidden5"
@@ -117,7 +122,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forbidden4"/>
+        app:layout_constraintTop_toBottomOf="@+id/forbidden4"
+        tools:ignore="HardcodedText"/>
 
 
     <LinearLayout
