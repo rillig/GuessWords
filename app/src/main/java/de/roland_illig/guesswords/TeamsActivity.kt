@@ -1,7 +1,9 @@
 package de.roland_illig.guesswords
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
@@ -9,9 +11,22 @@ import android.widget.TextView
 
 class TeamsActivity : AppCompatActivity() {
 
+    private val cardRequestCode = 1
+    private var buttonEnabled = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teams)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == cardRequestCode && resultCode == Activity.RESULT_OK && data != null) {
+            buttonEnabled = data.getBooleanExtra("enableButton", true)
+            if (!buttonEnabled) {
+                Handler().postDelayed({ buttonEnabled = true }, 1200)
+            }
+        }
     }
 
     override fun onResume() {
@@ -29,6 +44,7 @@ class TeamsActivity : AppCompatActivity() {
     }
 
     fun startCard(view: View) {
-        startActivity(Intent(this, CardActivity::class.java))
+        if (!buttonEnabled) return
+        startActivityForResult(Intent(this, CardActivity::class.java), cardRequestCode)
     }
 }

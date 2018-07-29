@@ -1,5 +1,6 @@
 package de.roland_illig.guesswords
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +16,7 @@ class CardActivity : AppCompatActivity() {
     private lateinit var timer: Timer
     private lateinit var handler: Handler
     private lateinit var progress: ProgressBar
+    private var buttonsEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,9 @@ class CardActivity : AppCompatActivity() {
                 state.timePasses(100)
                 progress.progress = state.totalMillis - state.remainingMillis
                 if (state.remainingMillis == 0) {
+                    state.nextCard()
                     state.nextTeam()
+                    setResult(RESULT_OK, Intent().putExtra("enableButton", false))
                     finish()
                 }
                 state.save(this@CardActivity)
@@ -56,22 +60,28 @@ class CardActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.forbidden3).text = card.forbidden3
         findViewById<TextView>(R.id.forbidden4).text = card.forbidden4
         findViewById<TextView>(R.id.forbidden5).text = card.forbidden5
-    }
 
-    fun correctClicked(view: View) {
-        state.correct()
-        state.save(this)
-        updateCard()
+        buttonsEnabled = false
+        Handler().postDelayed({ buttonsEnabled = true }, 1200)
     }
 
     fun wrongClicked(view: View) {
+        if (!buttonsEnabled) return
         state.wrong()
         state.save(this)
         updateCard()
     }
 
     fun skipClicked(view: View) {
+        if (!buttonsEnabled) return
         state.nextCard()
+        state.save(this)
+        updateCard()
+    }
+
+    fun correctClicked(view: View) {
+        if (!buttonsEnabled) return
+        state.correct()
         state.save(this)
         updateCard()
     }
