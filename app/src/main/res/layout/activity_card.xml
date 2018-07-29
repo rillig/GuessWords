@@ -8,12 +8,24 @@
     tools:context=".CardActivity"
     tools:showIn="@layout/activity_card">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="16sp"
+        android:background="@color/term_bg"
+        android:progress="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/term"
         android:layout_width="match_parent"
         android:layout_height="96sp"
         android:background="@color/term_bg"
         android:gravity="center"
+        android:paddingBottom="8sp"
         android:paddingEnd="16sp"
         android:paddingStart="16sp"
         android:text="Gesuchter Begriff"
@@ -23,7 +35,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/progress"/>
 
     <TextView
         android:id="@+id/forbidden1"

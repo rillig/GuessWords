@@ -9,4 +9,11 @@
     <string name="term_label">Gesuchter Begriff</string>
     <string name="forbidden_hint">Verbotener Begriff</string>
     <string name="save_button">Speichern</string>
+    <plurals name="team_score_label">
+        <item quantity="one">%d Punkt</item>
+        <item quantity="other">%d Punkte</item>
+    </plurals>
+    <string name="team_to_go_label">Team %s ist dran</string>
+    <string name="go_button">Los\u200A!</string>
+    <string name="continue_button">Weiter\u200A!</string>
 </resources>

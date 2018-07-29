@@ -29,31 +29,31 @@ enum class Player {
     fun other() = if (this == A) B else A
 }
 
-class GameState(
-        var millisTotal: Int,
-        cards: List<Card>) : Serializable {
+class GameState() : Serializable {
 
-    private var turn: Player = Player.A
-    private val points = intArrayOf(0, 0)
-    private var millisLeft: Int
-    private val remainingCards: MutableList<Card>
+    var turn = Player.A; private set
+    private val score = intArrayOf(0, 0)
+    private var millisLeft = 0
+    private val remainingCards = mutableListOf<Card>()
+    var secondsPerRound = 120
+        set(value) {
+            field = value; millisLeft = Math.min(millisLeft, value * 1000)
+        }
 
-    init {
-        millisLeft = millisTotal
-        remainingCards = cards.toMutableList()
-    }
+    val scoreA get() = score[0]
+    val scoreB get() = score[1]
 
     fun addCards(cards: List<Card>) {
         remainingCards += cards
     }
 
     fun correct() {
-        points[turn.ordinal]++
+        score[turn.ordinal]++
         nextCard()
     }
 
     fun wrong() {
-        points[turn.other().ordinal]++
+        score[turn.other().ordinal]++
         nextCard()
     }
 
@@ -74,5 +74,5 @@ class GameState(
 
     fun over() = millisLeft == 0
 
-    fun timePercentage() = 100 - 100 * millisLeft / millisTotal
+    fun timePercentage() = 100 - 100 * millisLeft / (secondsPerRound * 1000)
 }

@@ -18,7 +18,7 @@ class Persistence {
                     }
                 }
             } catch (e: Exception) {
-                return GameState(120, listOf())
+                return GameState()
             }
         }
     }

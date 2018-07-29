@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="gotoCard"
+            android:onClick="startTeams"
             android:text="@string/play_button"/>
 
         <Button
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="newCard"
+            android:onClick="startNewCard"
             android:text="@string/new_card_button"/>
     </LinearLayout>
 
