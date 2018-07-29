@@ -14,6 +14,7 @@
         <item quantity="other">%d Punkte</item>
     </plurals>
     <string name="team_to_go_label">Team %s ist dran</string>
+    <string name="all_cards_used_up">Alle Karten durchgespielt</string>
     <string name="go_button">Los\u200A!</string>
-    <string name="continue_button">Weiter\u200A!</string>
+    <string name="continue_button">Weiter</string>
 </resources>

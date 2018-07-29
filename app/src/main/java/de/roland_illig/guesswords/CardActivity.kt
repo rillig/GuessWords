@@ -1,13 +1,20 @@
 package de.roland_illig.guesswords
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
+import java.util.Timer
+import kotlin.concurrent.scheduleAtFixedRate
 
 class CardActivity : AppCompatActivity() {
 
     private lateinit var state: GameState
+    private lateinit var timer: Timer
+    private lateinit var handler: Handler
+    private lateinit var progress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +24,27 @@ class CardActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         state = Persistence.load(this)
+        progress = findViewById(R.id.progress)
+        progress.max = state.totalMillis
+        timer = Timer()
+        timer.scheduleAtFixedRate(0, 100) {
+            handler.post {
+                state.timePasses(100)
+                progress.progress = state.totalMillis - state.remainingMillis
+                if (state.remainingMillis == 0) {
+                    state.nextTeam()
+                    finish()
+                }
+                state.save(this@CardActivity)
+            }
+        }
+        handler = Handler()
         updateCard()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
     }
 
     private fun updateCard() {

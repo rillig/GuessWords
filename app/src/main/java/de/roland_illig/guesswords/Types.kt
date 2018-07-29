@@ -33,12 +33,13 @@ class GameState() : Serializable {
 
     var turn = Player.A; private set
     private val score = intArrayOf(0, 0)
-    private var millisLeft = 0
+    val totalMillis get() = secondsPerRound * 1000
     private val remainingCards = mutableListOf<Card>()
     var secondsPerRound = 120
         set(value) {
-            field = value; millisLeft = Math.min(millisLeft, value * 1000)
+            field = value; remainingMillis = totalMillis
         }
+    var remainingMillis = totalMillis; private set
 
     val scoreA get() = score[0]
     val scoreB get() = score[1]
@@ -63,16 +64,13 @@ class GameState() : Serializable {
     }
 
     fun timePasses(millis: Int) {
-        millisLeft -= Math.max(0, millis)
+        remainingMillis = Math.max(0, remainingMillis - millis)
     }
 
     fun nextTeam() {
         turn = turn.other()
+        remainingMillis = totalMillis
     }
 
     fun currentCard() = remainingCards.lastOrNull()
-
-    fun over() = millisLeft == 0
-
-    fun timePercentage() = 100 - 100 * millisLeft / (secondsPerRound * 1000)
 }
