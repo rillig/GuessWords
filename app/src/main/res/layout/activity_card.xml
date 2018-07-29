@@ -136,15 +136,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/correct_button"
-            android:layout_width="match_parent"
-            android:layout_height="96sp"
-            android:layout_weight="1"
-            android:onClick="correctClicked"
-            android:text="@string/correct_button"
-            android:textSize="20sp"/>
-
-        <Button
             android:id="@+id/wrong_button"
             android:layout_width="match_parent"
             android:layout_height="96sp"
@@ -160,6 +151,15 @@
             android:layout_weight="1"
             android:onClick="skipClicked"
             android:text="@string/skip_button"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/correct_button"
+            android:layout_width="match_parent"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="correctClicked"
+            android:text="@string/correct_button"
             android:textSize="20sp"/>
     </LinearLayout>
 

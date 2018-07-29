@@ -13,7 +13,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    fun startTeams(view: View) {
+    fun startNewGame(view: View) {
+        GameState().save(this)
+        startGame(view)
+    }
+
+    fun startGame(view: View) {
         val state = Persistence.load(this)
         if (state.currentCard() == null) {
             val cards = Db(this).use { it.load(Locale.getDefault().language) }

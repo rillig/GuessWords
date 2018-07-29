@@ -7,7 +7,31 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/button_bar"
+        android:id="@+id/button_bar_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="0dp"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="startNewGame"
+            android:text="@string/new_game_button"
+            android:textSize="20sp"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_bar_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -18,18 +42,20 @@
         <Button
             android:id="@+id/play_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="96sp"
             android:layout_weight="1"
-            android:onClick="startTeams"
-            android:text="@string/play_button"/>
+            android:onClick="startGame"
+            android:text="@string/play_button"
+            android:textSize="20sp"/>
 
         <Button
             android:id="@+id/new_card_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="96sp"
             android:layout_weight="1"
             android:onClick="startNewCard"
-            android:text="@string/new_card_button"/>
+            android:text="@string/new_card_button"
+            android:textSize="20sp"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

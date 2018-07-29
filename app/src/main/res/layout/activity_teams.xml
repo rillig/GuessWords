@@ -108,7 +108,7 @@
         android:layout_height="96sp"
         android:onClick="startCard"
         android:text="@string/go_button"
-        android:textSize="32sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
