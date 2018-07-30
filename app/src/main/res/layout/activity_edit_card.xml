@@ -113,18 +113,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/forbidden4"/>
 
-    <LinearLayout
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="96sp"
+        android:onClick="save"
+        android:text="@string/save_button"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="96sp"
-            android:onClick="save"
-            android:text="@string/save_button"
-            android:textSize="20sp"/>
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>
