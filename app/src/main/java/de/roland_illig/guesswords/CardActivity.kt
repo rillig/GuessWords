@@ -29,7 +29,6 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun tick() {
-        Handler().postDelayed(::tick, 100)
         state.timePasses(100)
         progress.progress = state.totalMillis - state.remainingMillis
         if (state.remainingMillis == 0) {
@@ -37,6 +36,8 @@ class CardActivity : AppCompatActivity() {
             state.nextTeam()
             setResult(RESULT_OK, Intent().putExtra("enableButton", false))
             finish()
+        } else {
+            Handler().postDelayed(::tick, 100)
         }
         state.save(this@CardActivity)
     }
