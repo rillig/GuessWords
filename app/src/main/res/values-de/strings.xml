@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Wörter raten</string>
 
+    <string name="feedback_button">Feedback</string>
     <string name="import_button">Importieren</string>
     <string name="export_button">Exportieren</string>
     <string name="new_game_button">Neues Spiel</string>
     <string name="play_button">Spielen</string>
     <string name="new_card_button">Neue Karte</string>
+
+    <string name="feedback_mail_subject">Feedback für Tabu</string>
 
     <plurals name="import_cards_question">
         <item quantity="one">%d Karte importieren?</item>

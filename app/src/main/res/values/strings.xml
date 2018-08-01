@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Guess Words</string>
 
+    <string name="feedback_button">Feedback</string>
     <string name="import_button">Import</string>
     <string name="export_button">Export</string>
     <string name="new_game_button">New game</string>
     <string name="new_card_button">New Card</string>
     <string name="play_button">Play</string>
+
+    <string name="feedback_mail_subject">Feedback for Taboo</string>
 
     <plurals name="import_cards_question">
         <item quantity="one">Import %d card?</item>

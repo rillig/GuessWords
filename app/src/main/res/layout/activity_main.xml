@@ -16,6 +16,30 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/feedback_button"
+            android:layout_width="0dp"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="startFeedback"
+            android:text="@string/feedback_button"
+            android:textSize="20sp"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_bar_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
             android:id="@+id/import_button"
             android:layout_width="0dp"
             android:layout_height="96sp"
@@ -35,11 +59,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar_2"
+        android:id="@+id/button_bar_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/button_bar_3"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -59,7 +83,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar_3"
+        android:id="@+id/button_bar_4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
