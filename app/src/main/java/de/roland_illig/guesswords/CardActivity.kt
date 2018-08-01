@@ -7,14 +7,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import java.util.Timer
-import kotlin.concurrent.scheduleAtFixedRate
 
 class CardActivity : AppCompatActivity() {
 
     private lateinit var state: GameState
-    private lateinit var timer: Timer
-    private lateinit var handler: Handler
     private lateinit var progress: ProgressBar
     private var buttonsEnabled = false
 
@@ -28,27 +24,21 @@ class CardActivity : AppCompatActivity() {
         state = Persistence.load(this)
         progress = findViewById(R.id.progress)
         progress.max = state.totalMillis
-        timer = Timer()
-        timer.scheduleAtFixedRate(0, 100) {
-            handler.post {
-                state.timePasses(100)
-                progress.progress = state.totalMillis - state.remainingMillis
-                if (state.remainingMillis == 0) {
-                    state.nextCard()
-                    state.nextTeam()
-                    setResult(RESULT_OK, Intent().putExtra("enableButton", false))
-                    finish()
-                }
-                state.save(this@CardActivity)
-            }
-        }
-        handler = Handler()
+        Handler().postDelayed(::tick, 100)
         updateCard()
     }
 
-    override fun onPause() {
-        super.onPause()
-        timer.cancel()
+    private fun tick() {
+        Handler().postDelayed(::tick, 100)
+        state.timePasses(100)
+        progress.progress = state.totalMillis - state.remainingMillis
+        if (state.remainingMillis == 0) {
+            state.nextCard()
+            state.nextTeam()
+            setResult(RESULT_OK, Intent().putExtra("enableButton", false))
+            finish()
+        }
+        state.save(this@CardActivity)
     }
 
     private fun updateCard() {
