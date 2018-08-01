@@ -37,4 +37,5 @@
     <string name="wrong_button">Wrong</string>
     <string name="skip_button">Next</string>
     <string name="correct_button">Correct</string>
+    <string name="import_no_cards_found">The clipboard does not contain cards to import.</string>
 </resources>

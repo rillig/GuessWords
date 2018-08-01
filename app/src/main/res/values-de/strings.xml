@@ -11,6 +11,7 @@
         <item quantity="one">%d Karte importieren?</item>
         <item quantity="other">%d Karten importieren?</item>
     </plurals>
+    <string name="import_no_cards_found">Die Zwischenablage enthält keine Karten.</string>
 
     <string name="csv_uuid">UUID</string>
     <string name="csv_language">Sprache</string>

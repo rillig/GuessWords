@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            if (cards.isEmpty()) {
+                Toast.makeText(this, getString(de.roland_illig.guesswords.R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+                return
+            }
+
             AlertDialog.Builder(this)
                     .setMessage(resources.getQuantityString(R.plurals.import_cards_question, cards.size, cards.size))
                     .setPositiveButton(getString(R.string.import_button)) { _, _ -> Db(this).use { db -> cards.forEach(db::add) } }
