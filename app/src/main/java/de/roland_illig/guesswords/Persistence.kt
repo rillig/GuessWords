@@ -93,7 +93,7 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
                         "forbidden4",
                         "forbidden5"
                 ),
-                if (language != "") "language = ?" else null,
+                if (language != "") "language = ? AND term IS NOT NULL" else null,
                 if (language != "") arrayOf(language) else arrayOf(),
                 null,
                 null,
