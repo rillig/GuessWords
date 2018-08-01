@@ -23,8 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     fun runImport(view: View) {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        if (clipboard.hasPrimaryClip() && clipboard.primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-            val text = clipboard.primaryClip.getItemAt(0).text
+        val clip = clipboard.primaryClip
+        if (clip != null && (clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) || clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML))) {
+            val text = clip.getItemAt(0).coerceToText(this)
             val cards = mutableListOf<Card>()
             text.split(Regex("\r?\n")).forEach { line ->
                 val cells = line.split(Regex("[,;\t] *+"))
@@ -34,17 +35,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            if (cards.isEmpty()) {
-                Toast.makeText(this, getString(de.roland_illig.guesswords.R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+            if (!cards.isEmpty()) {
+                AlertDialog.Builder(this)
+                        .setMessage(resources.getQuantityString(R.plurals.import_cards_question, cards.size, cards.size))
+                        .setPositiveButton(getString(R.string.import_button)) { _, _ -> Db(this).use { db -> cards.forEach(db::add) } }
+                        .setCancelable(true)
+                        .show()
                 return
             }
-
-            AlertDialog.Builder(this)
-                    .setMessage(resources.getQuantityString(R.plurals.import_cards_question, cards.size, cards.size))
-                    .setPositiveButton(getString(R.string.import_button)) { _, _ -> Db(this).use { db -> cards.forEach(db::add) } }
-                    .setCancelable(true)
-                    .show()
         }
+
+        Toast.makeText(this, getString(de.roland_illig.guesswords.R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
     }
 
     fun runExport(view: View) {
