@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Guess Words</string>
 
+    <string name="round_length_label">Round length: %s</string>
+    <string name="round_length_30s">30 seconds</string>
+    <string name="round_length_60s">1 minute</string>
+    <string name="round_length_90s">1.5 minutes</string>
+    <string name="round_length_120s">2 minutes</string>
+    <string name="round_length_180s">3 minutes</string>
+    <string name="round_length_300s">5 minutes</string>
+    <string name="round_length_600s">10 minutes</string>
+
     <string name="feedback_button">Feedback</string>
     <string name="import_button">Import</string>
     <string name="export_button">Export</string>

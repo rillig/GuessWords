@@ -10,9 +10,9 @@ import android.widget.TextView
 
 class CardActivity : AppCompatActivity() {
 
-    private lateinit var state: GameState
     private lateinit var progress: ProgressBar
     private var buttonsEnabled = false
+    private var active = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,29 +21,35 @@ class CardActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        state = Persistence.load(this)
+        active = true
         progress = findViewById(R.id.progress)
-        progress.max = state.totalMillis
+        progress.max = withGameState(this) { it.totalMillis }
         Handler().postDelayed(::tick, 100)
         updateCard()
     }
 
+    override fun onPause() {
+        active = false
+        super.onPause()
+    }
+
     private fun tick() {
-        state.timePasses(100)
-        progress.progress = state.totalMillis - state.remainingMillis
-        if (state.remainingMillis == 0) {
-            state.nextCard()
-            state.nextTeam()
-            setResult(RESULT_OK, Intent().putExtra("enableButton", false))
-            finish()
-        } else {
-            Handler().postDelayed(::tick, 100)
+        withGameState(this) { state ->
+            state.timePasses(100)
+            progress.progress = state.totalMillis - state.remainingMillis
+            if (state.remainingMillis == 0) {
+                state.nextCard()
+                state.nextTeam()
+                setResult(RESULT_OK, Intent().putExtra("enableButton", false))
+                finish()
+            } else if (active) {
+                Handler().postDelayed(::tick, 100)
+            }
         }
-        state.save(this@CardActivity)
     }
 
     private fun updateCard() {
-        val card = state.currentCard() ?: return finish()
+        val card = loadGameState(this).currentCard() ?: return finish()
 
         findViewById<TextView>(R.id.term).text = card.term
         findViewById<TextView>(R.id.forbidden1).text = card.forbidden1
@@ -58,22 +64,19 @@ class CardActivity : AppCompatActivity() {
 
     fun wrongClicked(view: View) {
         if (!buttonsEnabled) return
-        state.wrong()
-        state.save(this)
+        withGameState(this, GameState::wrong)
         updateCard()
     }
 
     fun skipClicked(view: View) {
         if (!buttonsEnabled) return
-        state.nextCard()
-        state.save(this)
+        withGameState(this, GameState::nextCard)
         updateCard()
     }
 
     fun correctClicked(view: View) {
         if (!buttonsEnabled) return
-        state.correct()
-        state.save(this)
+        withGameState(this, GameState::correct)
         updateCard()
     }
 }

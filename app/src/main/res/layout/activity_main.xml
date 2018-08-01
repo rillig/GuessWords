@@ -7,11 +7,35 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/button_bar_1"
+        android:id="@+id/button_bar_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16sp"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/round_length_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/round_length_label"/>
+
+        <SeekBar
+            android:id="@+id/round_length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="6"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_bar_4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/button_bar_2"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -31,11 +55,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar_2"
+        android:id="@+id/button_bar_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/button_bar_3"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -59,11 +83,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar_3"
+        android:id="@+id/button_bar_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/button_bar_4"
+        app:layout_constraintBottom_toTopOf="@id/button_bar_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -83,7 +107,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_bar_4"
+        android:id="@+id/button_bar_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 import java.util.Locale
 import java.util.UUID
@@ -17,9 +19,56 @@ import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
+    private val roundLengths = listOf(
+            Pair(30, R.string.round_length_30s),
+            Pair(60, R.string.round_length_60s),
+            Pair(90, R.string.round_length_90s),
+            Pair(120, R.string.round_length_120s),
+            Pair(180, R.string.round_length_180s),
+            Pair(300, R.string.round_length_300s),
+            Pair(600, R.string.round_length_600s))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val roundLengthLabel = findViewById<TextView>(R.id.round_length_label)
+        val roundLength = findViewById<SeekBar>(R.id.round_length)
+
+        fun updateLabel(index: Int) {
+            val param = resources.getString(roundLengths[index].second)
+            val label = resources.getString(R.string.round_length_label, param)
+            roundLengthLabel.text = label
+        }
+
+        withGameState(this) { state ->
+            roundLengths.forEachIndexed { index, (seconds, _) ->
+                if (state.secondsPerRound == seconds) {
+                    roundLength.progress = index
+                }
+            }
+        }
+        updateLabel(roundLength.progress)
+
+        val onChange = object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                withGameState(this@MainActivity) { state ->
+                    state.secondsPerRound = roundLengths[progress].first
+                }
+
+                updateLabel(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        }
+
+        roundLength.setOnSeekBarChangeListener(onChange)
     }
 
     fun startFeedback(view: View) {
@@ -91,17 +140,17 @@ class MainActivity : AppCompatActivity() {
     fun startNewCard(view: View) = startActivity(Intent(this, EditCardActivity::class.java))
 
     fun startNewGame(view: View) {
-        GameState().save(this)
+        GameState(loadGameState(this).secondsPerRound).save(this)
         startGame(view)
     }
 
     fun startGame(view: View) {
-        val state = Persistence.load(this)
-        if (state.currentCard() == null) {
-            val cards = Db(this).use { it.load(Locale.getDefault().language) }
-            state.addCards(cards.shuffled())
+        withGameState(this) { state ->
+            if (state.currentCard() == null) {
+                val cards = Db(this).use { it.load(Locale.getDefault().language) }
+                state.addCards(cards.shuffled())
+            }
         }
-        state.save(this)
 
         startActivity(Intent(this, TeamsActivity::class.java))
     }

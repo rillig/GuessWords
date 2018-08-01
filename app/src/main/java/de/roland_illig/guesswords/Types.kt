@@ -19,13 +19,13 @@ enum class Player {
     fun other() = if (this == A) B else A
 }
 
-class GameState() : Serializable {
+class GameState(secondsPerRound: Int = 120) : Serializable {
 
     var turn = Player.A; private set
     private val score = intArrayOf(0, 0)
     val totalMillis get() = secondsPerRound * 1000
     private val remainingCards = mutableListOf<Card>()
-    var secondsPerRound = 120
+    var secondsPerRound = secondsPerRound
         set(value) {
             field = value; remainingMillis = totalMillis
         }

@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Wörter raten</string>
 
+    <string name="round_length_label">Rundenlänge: %s</string>
+    <string name="round_length_30s">30 Sekunden</string>
+    <string name="round_length_60s">1 Minute</string>
+    <string name="round_length_90s">1,5 Minuten</string>
+    <string name="round_length_120s">2 Minuten</string>
+    <string name="round_length_180s">3 Minuten</string>
+    <string name="round_length_300s">5 Minuten</string>
+    <string name="round_length_600s">10 Minuten</string>
     <string name="feedback_button">Feedback</string>
     <string name="import_button">Importieren</string>
     <string name="export_button">Exportieren</string>

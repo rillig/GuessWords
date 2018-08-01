@@ -8,20 +8,21 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.UUID
 
-class Persistence {
-    companion object {
-        fun load(ctx: Context): GameState {
-            try {
-                ctx.openFileInput("state").use {
-                    ObjectInputStream(it).use {
-                        return it.readObject() as GameState
-                    }
-                }
-            } catch (e: Exception) {
-                return GameState()
+fun loadGameState(ctx: Context): GameState {
+    try {
+        ctx.openFileInput("state").use {
+            ObjectInputStream(it).use {
+                return it.readObject() as GameState
             }
         }
+    } catch (e: Exception) {
+        return GameState()
     }
+}
+
+fun <R> withGameState(ctx: Context, action: (GameState) -> R): R {
+    val state = loadGameState(ctx)
+    return action(state).also { state.save(ctx) }
 }
 
 fun GameState.save(ctx: Context) {
