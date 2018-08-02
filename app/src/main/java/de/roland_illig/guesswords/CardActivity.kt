@@ -32,14 +32,14 @@ class CardActivity : AppCompatActivity() {
         state = loadGameState(this)
 
         timer.scheduleAtFixedRate(0, 100) { updateProgressBar() }
-        timer.scheduleAtFixedRate(1000, 1000) { state.save(this@CardActivity) }
 
         updateCard()
     }
 
     override fun onPause() {
-        super.onPause()
         timer.cancel()
+        state.save(this)
+        super.onPause()
     }
 
     private fun updateProgressBar() {
@@ -54,7 +54,7 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun updateCard() {
-        val card = loadGameState(this).currentCard() ?: return finish()
+        val card = state.currentCard() ?: return finish()
 
         findViewById<TextView>(R.id.term).text = card.term
         findViewById<TextView>(R.id.forbidden1).text = card.forbidden1
@@ -69,19 +69,19 @@ class CardActivity : AppCompatActivity() {
 
     fun wrongClicked(view: View) {
         if (!buttonsEnabled) return
-        withGameState(this, GameState::wrong)
+        state.wrong()
         updateCard()
     }
 
     fun skipClicked(view: View) {
         if (!buttonsEnabled) return
-        withGameState(this, GameState::nextCard)
+        state.nextCard()
         updateCard()
     }
 
     fun correctClicked(view: View) {
         if (!buttonsEnabled) return
-        withGameState(this, GameState::correct)
+        state.correct()
         updateCard()
     }
 }
