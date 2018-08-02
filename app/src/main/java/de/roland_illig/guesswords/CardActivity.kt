@@ -25,12 +25,13 @@ class CardActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        state = loadGameState(this)
         progress = findViewById(R.id.progress)
-        progress.max = withGameState(this) { it.totalMillis }
+        progress.max = state.totalMillis
+
         handler = Handler()
         timer = Timer()
-        state = loadGameState(this)
-
         timer.scheduleAtFixedRate(0, 100) { updateProgressBar() }
 
         updateCard()
