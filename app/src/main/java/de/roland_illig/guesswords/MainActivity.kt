@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
             Pair(300, R.string.round_length_300s),
             Pair(600, R.string.round_length_600s))
 
+    private lateinit var state: GameState
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,7 +37,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        state = loadGameState(this)
+        initRoundLength()
+    }
 
+    override fun onPause() {
+        state.save(this)
+        super.onPause()
+    }
+
+    private fun initRoundLength() {
         val roundLengthLabel = findViewById<TextView>(R.id.round_length_label)
         val roundLength = findViewById<SeekBar>(R.id.round_length)
 
@@ -45,26 +56,20 @@ class MainActivity : AppCompatActivity() {
             roundLengthLabel.text = label
         }
 
-        withGameState(this) { state ->
-            roundLengths.forEachIndexed { index, (seconds, _) ->
-                if (state.secondsPerRound == seconds) {
-                    roundLength.progress = index
-                }
+        roundLengths.forEachIndexed { index, (seconds, _) ->
+            if (state.secondsPerRound == seconds) {
+                roundLength.progress = index
             }
         }
         updateLabel(roundLength.progress)
 
         val onChange = object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                withGameState(this@MainActivity) { state ->
-                    state.secondsPerRound = roundLengths[progress].first
-                }
-
+                state.secondsPerRound = roundLengths[progress].first
                 updateLabel(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
-
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         }
 
@@ -140,16 +145,14 @@ class MainActivity : AppCompatActivity() {
     fun startNewCard(view: View) = startActivity(Intent(this, EditCardActivity::class.java))
 
     fun startNewGame(view: View) {
-        GameState(loadGameState(this).secondsPerRound).save(this)
+        state = GameState(state.secondsPerRound)
         startGame(view)
     }
 
     fun startGame(view: View) {
-        withGameState(this) { state ->
-            if (state.currentCard() == null) {
-                val cards = Db(this).use { it.load(Locale.getDefault().language) }
-                state.addCards(cards.shuffled())
-            }
+        if (state.currentCard() == null) {
+            val cards = Db(this).use { it.load(Locale.getDefault().language) }
+            state.addCards(cards.shuffled())
         }
 
         startActivity(Intent(this, TeamsActivity::class.java))

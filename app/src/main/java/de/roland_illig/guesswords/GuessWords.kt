@@ -6,7 +6,70 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.io.Serializable
 import java.util.UUID
+
+class Card(
+        val uuid: UUID,
+        val language: String,
+        val term: String,
+        val forbidden1: String,
+        val forbidden2: String,
+        val forbidden3: String,
+        val forbidden4: String,
+        val forbidden5: String) : Serializable
+
+enum class Player {
+    A, B;
+
+    fun other() = if (this == A) B else A
+}
+
+class GameState(secondsPerRound: Int = 120) : Serializable {
+
+    var turn = Player.A; private set
+    private val score = intArrayOf(0, 0)
+    val totalMillis get() = secondsPerRound * 1000
+    private val remainingCards = mutableListOf<Card>()
+    var secondsPerRound = secondsPerRound
+        set(value) {
+            field = value; remainingMillis = totalMillis
+        }
+    var remainingMillis = totalMillis; private set
+
+    val scoreA get() = score[0]
+    val scoreB get() = score[1]
+
+    fun addCards(cards: List<Card>) {
+        remainingCards += cards
+    }
+
+    fun correct() {
+        score[turn.ordinal]++
+        nextCard()
+    }
+
+    fun wrong() {
+        score[turn.other().ordinal]++
+        nextCard()
+    }
+
+    fun nextCard() {
+        if (!remainingCards.isEmpty())
+            remainingCards.removeAt(remainingCards.lastIndex)
+    }
+
+    fun timePasses(millis: Int) {
+        remainingMillis = Math.max(0, remainingMillis - millis)
+    }
+
+    fun nextTeam() {
+        turn = turn.other()
+        remainingMillis = totalMillis
+    }
+
+    fun currentCard() = remainingCards.lastOrNull()
+}
 
 fun loadGameState(ctx: Context): GameState {
     try {
@@ -18,11 +81,6 @@ fun loadGameState(ctx: Context): GameState {
     } catch (e: Exception) {
         return GameState()
     }
-}
-
-fun <R> withGameState(ctx: Context, action: (GameState) -> R): R {
-    val state = loadGameState(ctx)
-    return action(state).also { state.save(ctx) }
 }
 
 fun GameState.save(ctx: Context) {
@@ -117,4 +175,16 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
         }
         return cards
     }
+}
+
+fun predefinedCards(): List<Card> {
+
+    fun de(uuid: String, term: String, forbidden1: String, forbidden2: String, forbidden3: String, forbidden4: String, forbidden5: String) =
+            Card(UUID.fromString(uuid), "de", term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
+
+    return listOf(
+            de("7425a3b8-1052-4712-c9cd-ae9ab7980001", "Krone", "Baum", "König", "Kopf", "Zahn", "Dänemark"),
+            de("7425a3b8-1052-4712-c9cd-ae9ab7980002", "Hund", "Katze", "Haustier", "Bello", "Goofy", "bellen"),
+            de("7425a3b8-1052-4712-c9cd-ae9ab7980003", "Strand", "Sandburg", "Meer", "Ostsee", "Lagerfeuer", "Düne"),
+            de("7425a3b8-1052-4712-c9cd-ae9ab7980004", "Hausboot", "Wasser", "Fluss", "wohnen", "Gebäude", "schwimmen"))
 }

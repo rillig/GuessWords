@@ -13,6 +13,7 @@ class TeamsActivity : AppCompatActivity() {
 
     private val cardRequestCode = 1
     private var buttonEnabled = true
+    private lateinit var state: GameState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +32,16 @@ class TeamsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        withGameState(this) { state ->
-            findViewById<TextView>(R.id.score_a).text = resources.getQuantityString(R.plurals.team_score_label, state.scoreA, state.scoreA)
-            findViewById<TextView>(R.id.score_b).text = resources.getQuantityString(R.plurals.team_score_label, state.scoreB, state.scoreB)
-            val over = state.currentCard() == null
-            val gameState = if (over) getString(R.string.all_cards_used_up) else getString(R.string.team_to_go_label).format(state.turn)
-            findViewById<TextView>(R.id.game_state).text = gameState
-            findViewById<Button>(R.id.go_button).apply {
-                isEnabled = !over
-                text = getString(if (state.remainingMillis == state.totalMillis) R.string.go_button else R.string.continue_button)
-            }
+        state = loadGameState(this)
+
+        findViewById<TextView>(R.id.score_a).text = resources.getQuantityString(R.plurals.team_score_label, state.scoreA, state.scoreA)
+        findViewById<TextView>(R.id.score_b).text = resources.getQuantityString(R.plurals.team_score_label, state.scoreB, state.scoreB)
+        val over = state.currentCard() == null
+        val gameState = if (over) getString(R.string.all_cards_used_up) else getString(R.string.team_to_go_label).format(state.turn)
+        findViewById<TextView>(R.id.game_state).text = gameState
+        findViewById<Button>(R.id.go_button).apply {
+            isEnabled = !over
+            text = getString(if (state.remainingMillis == state.totalMillis) R.string.go_button else R.string.continue_button)
         }
     }
 
