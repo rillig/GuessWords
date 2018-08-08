@@ -20,10 +20,7 @@
 
     <string name="feedback_mail_subject">Feedback for Taboo</string>
 
-    <plurals name="import_cards_question">
-        <item quantity="one">Import %d card?</item>
-        <item quantity="other">Import %d cards?</item>
-    </plurals>
+    <string name="import_stats">To be added: %d\nTo be updated: %d\nTo be unchanged: %d\nTo be removed: %d</string>
 
     <string name="csv_uuid">UUID</string>
     <string name="csv_language">Language</string>

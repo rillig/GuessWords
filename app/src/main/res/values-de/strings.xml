@@ -24,10 +24,7 @@
     <string name="export_mail_file_name">Wörter raten %s.csv</string>
     <string name="export_mail_subject">Wörter raten</string>
 
-    <plurals name="import_cards_question">
-        <item quantity="one">%d Karte importieren?</item>
-        <item quantity="other">%d Karten importieren?</item>
-    </plurals>
+    <string name="import_stats">Neu: %d\nGeändert: %d\nUnverändert: %d\nZu löschen: %d</string>
     <string name="import_no_cards_found">Die Zwischenablage enthält keine Karten.</string>
 
     <string name="csv_uuid">UUID</string>

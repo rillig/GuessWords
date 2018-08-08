@@ -109,11 +109,8 @@ class MainActivity : AppCompatActivity() {
             if (cards.isNotEmpty()) {
                 val stats = repo(this).use { it.merge(cards, false) }
 
-                val message = "" +
-                        "To be added: ${stats.added}\n" +
-                        "To be updated: ${stats.changed}\n" +
-                        "To be unchanged: ${stats.unchanged}\n" +
-                        "To be removed: ${stats.removed}"
+                val message = String.format(getString(R.string.import_stats),
+                        stats.added, stats.changed, stats.unchanged, stats.removed)
                 AlertDialog.Builder(this)
                         .setMessage(message)
                         .setPositiveButton(getString(R.string.import_button)) { _, _ -> repo(this).use { it.merge(cards, true) } }
