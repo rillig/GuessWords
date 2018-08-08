@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/csv; charset=UTF-8"
+        intent.type = "text/csv; charset=UTF-16LE"
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_mail_subject))
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.export_mail_body))
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://de.roland_illig.guesswords/${fileName}"))
