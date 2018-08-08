@@ -11,11 +11,12 @@
     <string name="round_length_600s">10 minutes</string>
 
     <string name="feedback_button">Feedback</string>
+    <string name="export_mail_button">Mail export</string>
     <string name="import_button">Import</string>
     <string name="export_button">Export</string>
-    <string name="new_game_button">New game</string>
     <string name="new_card_button">New Card</string>
     <string name="play_button">Play</string>
+    <string name="new_game_button">New game</string>
 
     <string name="feedback_mail_subject">Feedback for Taboo</string>
 
@@ -50,4 +51,7 @@
     <string name="skip_button">Next</string>
     <string name="correct_button">Correct</string>
     <string name="import_no_cards_found">The clipboard does not contain cards to import.</string>
+    <string name="export_mail_body">Word list for taboo</string>
+    <string name="export_mail_file_name">GuessWords %s.csv</string>
+    <string name="export_mail_subject">Subject</string>
 </resources>

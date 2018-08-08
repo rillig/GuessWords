@@ -9,14 +9,20 @@
     <string name="round_length_180s">3 Minuten</string>
     <string name="round_length_300s">5 Minuten</string>
     <string name="round_length_600s">10 Minuten</string>
+
     <string name="feedback_button">Feedback</string>
+    <string name="export_mail_button">Mailexport</string>
     <string name="import_button">Importieren</string>
     <string name="export_button">Exportieren</string>
-    <string name="new_game_button">Neues Spiel</string>
-    <string name="play_button">Spielen</string>
     <string name="new_card_button">Neue Karte</string>
+    <string name="play_button">Spielen</string>
+    <string name="new_game_button">Neues Spiel</string>
 
     <string name="feedback_mail_subject">Feedback für Tabu</string>
+
+    <string name="export_mail_body">Wörterliste für Tabu</string>
+    <string name="export_mail_file_name">Wörter raten %s.csv</string>
+    <string name="export_mail_subject">Wörter raten</string>
 
     <plurals name="import_cards_question">
         <item quantity="one">%d Karte importieren?</item>

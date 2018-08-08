@@ -13,6 +13,10 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.charset.StandardCharsets
+import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
@@ -118,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         val cards = Db(this).load("")
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
-            sb.append(elements.joinToString(postfix = "\r\n"))
+            sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
         }
         writeLine(
                 getString(R.string.csv_uuid),
@@ -140,6 +144,42 @@ class MainActivity : AppCompatActivity() {
 
         val msg = resources.getQuantityString(R.plurals.exported_cards_notification, cards.size, cards.size)
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    fun mailExport(view: View) {
+        val cards = Db(this).load("")
+        val sb = StringBuilder("\uFEFF")
+        fun writeLine(vararg elements: Any) {
+            sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
+        }
+        writeLine(
+                getString(R.string.csv_uuid),
+                getString(R.string.csv_language),
+                getString(R.string.csv_term),
+                getString(R.string.csv_forbidden),
+                getString(R.string.csv_forbidden),
+                getString(R.string.csv_forbidden),
+                getString(R.string.csv_forbidden),
+                getString(R.string.csv_forbidden))
+        cards.forEach {
+            it.apply {
+                writeLine(uuid, language, term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
+            }
+        }
+
+        val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(Date())
+        val fileName = String.format(getString(R.string.export_mail_file_name), timestamp)
+        val tmpfile = File(cacheDir, fileName)
+        FileOutputStream(tmpfile).use {
+            it.writer(StandardCharsets.UTF_16LE).write(sb.toString())
+        }
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/csv; charset=UTF-8"
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_mail_subject))
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.export_mail_body))
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://de.roland_illig.guesswords/${fileName}"))
+        startActivity(intent)
     }
 
     fun startNewCard(view: View) = startActivity(Intent(this, EditCardActivity::class.java))

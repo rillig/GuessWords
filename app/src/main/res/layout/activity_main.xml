@@ -48,10 +48,14 @@
             android:text="@string/feedback_button"
             android:textSize="20sp"/>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/export_mail_button"
+            android:layout_width="0dp"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="mailExport"
+            android:text="@string/export_mail_button"
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <LinearLayout

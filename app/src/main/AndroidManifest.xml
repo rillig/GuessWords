@@ -34,5 +34,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>
+
+        <provider
+            android:name=".ExportContentProvider"
+            android:authorities="de.roland_illig.guesswords"
+            android:enabled="true"
+            android:exported="false"
+            android:grantUriPermissions="true"/>
+
     </application>
 </manifest>
