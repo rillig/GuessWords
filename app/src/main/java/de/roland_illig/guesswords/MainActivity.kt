@@ -2,11 +2,11 @@ package de.roland_illig.guesswords
 
 import android.app.AlertDialog
 import android.content.ClipData
-import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -18,7 +18,6 @@ import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 
 class MainActivity : AppCompatActivity() {
@@ -91,36 +90,49 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun runImport(view: View) {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = clipboard.primaryClip
-        if (clip != null && (clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) || clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML))) {
-            val text = clip.getItemAt(0).coerceToText(this)
-            val cards = mutableListOf<Card>()
-            text.split(Regex("[\r\n]++")).forEach { line ->
-                val cells = line.split(Regex("[,;\t] *+")).map(String::trim)
-                if (cells.size >= 8 && (cells[0] == "" || cells[0].length == 36)) {
-                    val uuid = if (cells[0] == "") UUID.randomUUID() else UUID.fromString(cells[0])
-                    cards += Card(uuid, cells[1], cells[2], cells[3], cells[4], cells[5], cells[6], cells[7])
-                }
-            }
-
-
+    private class ImportStep1Task(private val ctx: Context, private val text: String) : AsyncTask<Unit, Unit, Pair<List<Card>, MergeStats>>() {
+        override fun doInBackground(vararg unused: Unit): Pair<List<Card>, MergeStats>? {
+            val cards = parseCards(text)
             if (cards.isNotEmpty()) {
-                val stats = repo(this).use { it.merge(cards, false) }
-
-                val message = String.format(getString(R.string.import_stats),
-                        stats.added, stats.changed, stats.unchanged, stats.removed)
-                AlertDialog.Builder(this)
-                        .setMessage(message)
-                        .setPositiveButton(getString(R.string.import_button)) { _, _ -> repo(this).use { it.merge(cards, true) } }
-                        .setCancelable(true)
-                        .show()
-                return
+                return Pair(cards, repo(ctx).use { it.merge(cards, false) })
             }
+            return null
         }
 
-        Toast.makeText(this, getString(de.roland_illig.guesswords.R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+        override fun onPostExecute(result: Pair<List<Card>, MergeStats>?) {
+            if (result != null) {
+                val (cards, stats) = result
+                val message = String.format(ctx.getString(R.string.import_stats),
+                        stats.added, stats.changed, stats.unchanged, stats.removed)
+                AlertDialog.Builder(ctx)
+                        .setMessage(message)
+                        .setPositiveButton(ctx.getString(R.string.import_button)) { _, _ -> ImportStep2Task(ctx, cards).execute() }
+                        .setCancelable(true)
+                        .show()
+            } else {
+                Toast.makeText(ctx, ctx.getString(R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private class ImportStep2Task(private val ctx: Context, private val cards: List<Card>) : AsyncTask<Unit, Unit, Unit>() {
+        override fun doInBackground(vararg unused: Unit): Unit? {
+            repo(ctx).use { it.merge(cards, true) }
+            return null
+        }
+    }
+
+    private fun getTextFromClipboard(): String {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = clipboard.primaryClip
+        if (clip != null && clip.description.getMimeType(0).startsWith("text/")) {
+            return clip.getItemAt(0).coerceToText(this).toString()
+        }
+        return ""
+    }
+
+    fun runImport(view: View) {
+        ImportStep1Task(this, getTextFromClipboard()).execute()
     }
 
     fun runExport(view: View) {

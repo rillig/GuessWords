@@ -242,3 +242,15 @@ fun predefinedCards(): List<Card> {
             de("7425a3b8-1052-4712-c9cd-ae9ab7980003", "Strand", "Sandburg", "Meer", "Ostsee", "Lagerfeuer", "Düne"),
             de("7425a3b8-1052-4712-c9cd-ae9ab7980004", "Hausboot", "Wasser", "Fluss", "wohnen", "Gebäude", "schwimmen"))
 }
+
+fun parseCards(text: CharSequence): List<Card> {
+    val cards = mutableListOf<Card>()
+    text.split(Regex("[\r\n]++")).forEach { line ->
+        val cells = line.split(Regex("[,;\t] *+")).map(String::trim)
+        if (cells.size >= 8 && (cells[0] == "" || cells[0].length == 36)) {
+            val uuid = if (cells[0] == "") UUID.randomUUID() else UUID.fromString(cells[0])
+            cards += Card(uuid, cells[1], cells[2], cells[3], cells[4], cells[5], cells[6], cells[7])
+        }
+    }
+    return cards
+}
