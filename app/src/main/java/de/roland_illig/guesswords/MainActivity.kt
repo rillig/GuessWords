@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -90,38 +89,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private class ImportStep1Task(private val ctx: Context, private val text: String) : AsyncTask<Unit, Unit, Pair<List<Card>, MergeStats>>() {
-        override fun doInBackground(vararg unused: Unit): Pair<List<Card>, MergeStats>? {
-            val cards = parseCards(text)
-            if (cards.isNotEmpty()) {
-                return Pair(cards, repo(ctx).use { it.merge(cards, false) })
-            }
-            return null
-        }
-
-        override fun onPostExecute(result: Pair<List<Card>, MergeStats>?) {
-            if (result != null) {
-                val (cards, stats) = result
-                val message = String.format(ctx.getString(R.string.import_stats),
-                        stats.added, stats.changed, stats.unchanged, stats.removed)
-                AlertDialog.Builder(ctx)
-                        .setMessage(message)
-                        .setPositiveButton(ctx.getString(R.string.import_button)) { _, _ -> ImportStep2Task(ctx, cards).execute() }
-                        .setCancelable(true)
-                        .show()
-            } else {
-                Toast.makeText(ctx, ctx.getString(R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    private class ImportStep2Task(private val ctx: Context, private val cards: List<Card>) : AsyncTask<Unit, Unit, Unit>() {
-        override fun doInBackground(vararg unused: Unit): Unit? {
-            repo(ctx).use { it.merge(cards, true) }
-            return null
-        }
-    }
-
     private fun getTextFromClipboard(): String {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = clipboard.primaryClip
@@ -132,7 +99,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun runImport(view: View) {
-        ImportStep1Task(this, getTextFromClipboard()).execute()
+        val text = getTextFromClipboard()
+        inBackground({ runImportSimulate(text) }, this::runImportConfirm)
+    }
+
+    private fun runImportSimulate(text: String): Pair<List<Card>, MergeStats>? {
+        val cards = parseCards(text)
+        return if (cards.isNotEmpty()) Pair(cards, repo(this).use { it.merge(cards, false) }) else null
+    }
+
+    private fun runImportConfirm(result: Pair<List<Card>, MergeStats>?) {
+        if (result != null) {
+            val (cards, stats) = result
+            val message = String.format(getString(R.string.import_stats),
+                    stats.added, stats.changed, stats.unchanged, stats.removed)
+            AlertDialog.Builder(this)
+                    .setMessage(message)
+                    .setPositiveButton(getString(R.string.import_button)) { _, _ -> inBackground<Unit>({ repo(this).use { it.merge(cards, true) } }) }
+                    .setCancelable(true)
+                    .show()
+        } else {
+            Toast.makeText(this, getString(R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+        }
     }
 
     fun runExport(view: View) {

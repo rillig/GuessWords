@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.AsyncTask
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
@@ -253,4 +254,12 @@ fun parseCards(text: CharSequence): List<Card> {
         }
     }
     return cards
+}
+
+fun <Result> inBackground(background: () -> Result, post: (Result) -> Unit = {}) {
+    class Task : AsyncTask<Unit, Unit, Result>() {
+        override fun doInBackground(vararg params: Unit) = background()
+        override fun onPostExecute(result: Result) = post(result)
+    }
+    Task().execute()
 }
