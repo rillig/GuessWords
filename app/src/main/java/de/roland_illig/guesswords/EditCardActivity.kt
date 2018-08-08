@@ -27,7 +27,7 @@ class EditCardActivity : AppCompatActivity() {
         val forbidden5 = text(R.id.forbidden5)
         val card = Card(uuid, language, term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
 
-        Db(this).use {
+        repo(this).use {
             it.add(card)
         }
 

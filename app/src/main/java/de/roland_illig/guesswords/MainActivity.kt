@@ -97,18 +97,26 @@ class MainActivity : AppCompatActivity() {
         if (clip != null && (clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) || clip.description.hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML))) {
             val text = clip.getItemAt(0).coerceToText(this)
             val cards = mutableListOf<Card>()
-            text.split(Regex("\r?\n")).forEach { line ->
-                val cells = line.split(Regex("[,;\t] *+"))
+            text.split(Regex("[\r\n]++")).forEach { line ->
+                val cells = line.split(Regex("[,;\t] *+")).map(String::trim)
                 if (cells.size >= 8 && (cells[0] == "" || cells[0].length == 36)) {
                     val uuid = if (cells[0] == "") UUID.randomUUID() else UUID.fromString(cells[0])
                     cards += Card(uuid, cells[1], cells[2], cells[3], cells[4], cells[5], cells[6], cells[7])
                 }
             }
 
-            if (!cards.isEmpty()) {
+
+            if (cards.isNotEmpty()) {
+                val stats = repo(this).use { it.merge(cards, false) }
+
+                val message = "" +
+                        "To be added: ${stats.added}\n" +
+                        "To be updated: ${stats.changed}\n" +
+                        "To be unchanged: ${stats.unchanged}\n" +
+                        "To be removed: ${stats.removed}"
                 AlertDialog.Builder(this)
-                        .setMessage(resources.getQuantityString(R.plurals.import_cards_question, cards.size, cards.size))
-                        .setPositiveButton(getString(R.string.import_button)) { _, _ -> Db(this).use { db -> cards.forEach(db::add) } }
+                        .setMessage(message)
+                        .setPositiveButton(getString(R.string.import_button)) { _, _ -> repo(this).use { it.merge(cards, true) } }
                         .setCancelable(true)
                         .show()
                 return
@@ -119,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun runExport(view: View) {
-        val cards = Db(this).load("")
+        val cards = repo(this).use { it.loadAll() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -147,7 +155,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun mailExport(view: View) {
-        val cards = Db(this).load("")
+        val cards = repo(this).use { it.loadAll() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -191,7 +199,7 @@ class MainActivity : AppCompatActivity() {
 
     fun startGame(view: View) {
         if (state.currentCard() == null) {
-            val cards = Db(this).use { it.load(Locale.getDefault().language) }
+            val cards = repo(this).use { it.load(Locale.getDefault().language) }
             state.addCards(cards.shuffled())
         }
 

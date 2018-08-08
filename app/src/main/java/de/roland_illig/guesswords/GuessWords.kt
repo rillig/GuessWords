@@ -2,6 +2,7 @@ package de.roland_illig.guesswords
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.io.ObjectInputStream
@@ -9,7 +10,7 @@ import java.io.ObjectOutputStream
 import java.io.Serializable
 import java.util.UUID
 
-class Card(
+data class Card(
         val uuid: UUID,
         val language: String,
         val term: String,
@@ -73,9 +74,9 @@ class GameState(secondsPerRound: Int = 120) : Serializable {
 
 fun loadGameState(ctx: Context): GameState {
     try {
-        ctx.openFileInput("state").use {
-            ObjectInputStream(it).use {
-                return it.readObject() as GameState
+        ctx.openFileInput("state").use { `is` ->
+            ObjectInputStream(`is`).use { ois ->
+                return ois.readObject() as GameState
             }
         }
     } catch (e: Exception) {
@@ -84,14 +85,30 @@ fun loadGameState(ctx: Context): GameState {
 }
 
 fun GameState.save(ctx: Context) {
-    ctx.openFileOutput("state", Context.MODE_PRIVATE).use {
-        ObjectOutputStream(it).use {
-            it.writeObject(this)
+    ctx.openFileOutput("state", Context.MODE_PRIVATE).use { os ->
+        ObjectOutputStream(os).use { oos ->
+            oos.writeObject(this)
         }
     }
 }
 
-class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCloseable {
+interface Repo : AutoCloseable {
+    fun add(card: Card)
+    fun load(language: String): List<Card>
+    fun loadAll(): List<Card>
+    fun merge(cards: List<Card>, commit: Boolean): MergeStats
+}
+
+data class MergeStats(
+        val added: Int,
+        val removed: Int,
+        val changed: Int,
+        val unchanged: Int)
+
+fun repo(ctx: Context): Repo = SQLiteRepo(ctx)
+
+class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), Repo {
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
             CREATE TABLE question (
@@ -106,54 +123,34 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
             )""")
 
         for (card in predefinedCards()) {
-            db.insert("question", null, ContentValues().apply {
-                put("uuid", card.uuid.toString())
-                put("language", card.language)
-                put("term", card.term)
-                put("forbidden1", card.forbidden1)
-                put("forbidden2", card.forbidden2)
-                put("forbidden3", card.forbidden3)
-                put("forbidden4", card.forbidden4)
-                put("forbidden5", card.forbidden5)
-            })
+            add(db, card)
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented")
-    }
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = TODO("not implemented")
 
-    fun add(card: Card) = add(writableDatabase, card)
+    override fun add(card: Card) = add(writableDatabase, card)
 
     fun add(db: SQLiteDatabase, card: Card) {
-        val cv = ContentValues().apply {
-            put("uuid", card.uuid.toString())
-            put("language", card.language)
-            put("term", card.term)
-            put("forbidden1", card.forbidden1)
-            put("forbidden2", card.forbidden2)
-            put("forbidden3", card.forbidden3)
-            put("forbidden4", card.forbidden4)
-            put("forbidden5", card.forbidden5)
-        }
-        db.insert("question", null, cv)
+        db.insert("question", null, card.toContentValues())
     }
 
-    fun load(language: String): List<Card> {
+    override fun load(language: String) = load("language = ? AND term IS NOT NULL", language)
+
+    override fun loadAll() = load(null)
+
+    private fun load(uuid: UUID): Card? {
+        readableDatabase
+                .query("question", columns, "uuid = ?", arrayOf(uuid.toString()), null, null, null)
+                .use { return if (it.moveToNext()) it.toCard() else null }
+    }
+
+    private fun load(selection: String?, vararg selectionArgs: String): List<Card> {
         val cursor = readableDatabase.query(
                 "question",
-                arrayOf(
-                        "uuid",
-                        "language",
-                        "term",
-                        "forbidden1",
-                        "forbidden2",
-                        "forbidden3",
-                        "forbidden4",
-                        "forbidden5"
-                ),
-                if (language != "") "language = ? AND term IS NOT NULL" else null,
-                if (language != "") arrayOf(language) else arrayOf(),
+                columns,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null)
@@ -161,20 +158,77 @@ class Db(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), AutoCl
         val cards = mutableListOf<Card>()
         cursor.use {
             while (cursor.moveToNext()) {
-                val card = Card(
-                        UUID.fromString(cursor.getString(0)),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(6),
-                        cursor.getString(7))
-                cards += card
+                cards += cursor.toCard()
             }
         }
         return cards
     }
+
+    override fun merge(cards: List<Card>, commit: Boolean): MergeStats {
+        var added = 0
+        var removed = 0
+        var changed = 0
+        var unchanged = 0
+
+        for (card in cards) {
+            val existing = load(card.uuid)
+            if (existing == null) {
+                added++
+                if (commit) {
+                    add(card)
+                }
+            } else if (existing == card) {
+                unchanged++
+            } else if (card.term == "" && existing.term != "") {
+                removed++
+                if (commit) {
+                    update(card)
+                }
+            } else {
+                changed++
+                if (commit) {
+                    update(card)
+                }
+            }
+        }
+
+        return MergeStats(added, removed, changed, unchanged)
+    }
+
+    private fun update(card: Card) {
+        writableDatabase.update("question", card.toContentValues(), "uuid = ?", arrayOf(card.uuid.toString()))
+    }
+
+    private val columns = arrayOf(
+            "uuid",
+            "language",
+            "term",
+            "forbidden1",
+            "forbidden2",
+            "forbidden3",
+            "forbidden4",
+            "forbidden5")
+
+    private fun Card.toContentValues() = ContentValues().apply {
+        put("uuid", uuid.toString())
+        put("language", language)
+        put("term", term)
+        put("forbidden1", forbidden1)
+        put("forbidden2", forbidden2)
+        put("forbidden3", forbidden3)
+        put("forbidden4", forbidden4)
+        put("forbidden5", forbidden5)
+    }
+
+    private fun Cursor.toCard() = Card(
+            UUID.fromString(getString(0)),
+            getString(1),
+            getString(2),
+            getString(3),
+            getString(4),
+            getString(5),
+            getString(6),
+            getString(7))
 }
 
 fun predefinedCards(): List<Card> {
