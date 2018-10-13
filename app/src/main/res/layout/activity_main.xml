@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="ButtonStyle"
+    tools:targetApi="o">
 
     <LinearLayout
         android:id="@+id/button_bar_5"
@@ -20,8 +22,8 @@
             android:id="@+id/round_length_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/round_length_label" />
+            android:text="@string/round_length_label"
+            android:textSize="20sp" />
 
         <SeekBar
             android:id="@+id/round_length"
