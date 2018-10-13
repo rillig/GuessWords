@@ -15,7 +15,7 @@
         android:progress="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/term"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/forbidden1"
@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/term"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/forbidden2"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden1"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/forbidden3"
@@ -86,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden2"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/forbidden4"
@@ -103,7 +103,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden3"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/forbidden5"
@@ -121,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forbidden4"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
 
     <LinearLayout
@@ -140,7 +140,7 @@
             android:layout_weight="1"
             android:onClick="wrongClicked"
             android:text="@string/wrong_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/skip_button"
@@ -149,7 +149,7 @@
             android:layout_weight="1"
             android:onClick="skipClicked"
             android:text="@string/skip_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/correct_button"
@@ -158,7 +158,7 @@
             android:layout_weight="1"
             android:onClick="correctClicked"
             android:text="@string/correct_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

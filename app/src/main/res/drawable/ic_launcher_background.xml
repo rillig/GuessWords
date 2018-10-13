@@ -1,22 +1,54 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:viewportWidth="48"
-        android:viewportHeight="48"
-        android:width="48dp"
-        android:height="48dp">
-    <path android:fillColor="#FFFFFF" android:name="background" android:strokeWidth="0"
-          android:fillAlpha="1" android:pathData="M 10,4 L 38,4 L 38,44 L 10,44 z"/>
-    <path android:fillColor="#7AD896" android:name="term_bg" android:strokeWidth="0"
-          android:fillAlpha="1" android:pathData="M 10,4 L 38,4 L 38,14 L 10,14 z"/>
-    <path android:fillColor="#00405E" android:name="term_fg" android:strokeWidth="0"
-          android:fillAlpha="1" android:pathData="M 14,8 L 34,8 L 34,10 L 14,10 z"/>
-    <path android:fillColor="#00405E" android:name="forbidden1" android:strokeWidth="0"
-          android:fillAlpha="0.5" android:pathData="M 14,18 L 34,18 L 34,20 L 14,20 z"/>
-    <path android:fillColor="#00405E" android:name="forbidden2" android:strokeWidth="0"
-          android:fillAlpha="0.5" android:pathData="M 14,23 L 34,23 L 34,25 L 14,25 z"/>
-    <path android:fillColor="#00405E" android:name="forbidden3" android:strokeWidth="0"
-          android:fillAlpha="0.5" android:pathData="M 14,28 L 34,28 L 34,30 L 14,30 z"/>
-    <path android:fillColor="#00405E" android:name="forbidden4" android:strokeWidth="0"
-          android:fillAlpha="0.5" android:pathData="M 14,33 L 34,33 L 34,35 L 14,35 z"/>
-    <path android:fillColor="#00405E" android:name="forbidden5" android:strokeWidth="0"
-          android:fillAlpha="0.5" android:pathData="M 14,38 L 34,38 L 34,40 L 14,40 z"/>
+    android:viewportWidth="48"
+    android:viewportHeight="48"
+    android:width="48dp"
+    android:height="48dp">
+    <path
+        android:fillColor="#FFFFFF"
+        android:name="background"
+        android:strokeWidth="0"
+        android:fillAlpha="1"
+        android:pathData="M 10,4 L 38,4 L 38,44 L 10,44 z" />
+    <path
+        android:fillColor="#7AD896"
+        android:name="term_bg"
+        android:strokeWidth="0"
+        android:fillAlpha="1"
+        android:pathData="M 10,4 L 38,4 L 38,14 L 10,14 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="term_fg"
+        android:strokeWidth="0"
+        android:fillAlpha="1"
+        android:pathData="M 14,8 L 34,8 L 34,10 L 14,10 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="forbidden1"
+        android:strokeWidth="0"
+        android:fillAlpha="0.5"
+        android:pathData="M 14,18 L 34,18 L 34,20 L 14,20 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="forbidden2"
+        android:strokeWidth="0"
+        android:fillAlpha="0.5"
+        android:pathData="M 14,23 L 34,23 L 34,25 L 14,25 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="forbidden3"
+        android:strokeWidth="0"
+        android:fillAlpha="0.5"
+        android:pathData="M 14,28 L 34,28 L 34,30 L 14,30 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="forbidden4"
+        android:strokeWidth="0"
+        android:fillAlpha="0.5"
+        android:pathData="M 14,33 L 34,33 L 34,35 L 14,35 z" />
+    <path
+        android:fillColor="#00405E"
+        android:name="forbidden5"
+        android:strokeWidth="0"
+        android:fillAlpha="0.5"
+        android:pathData="M 14,38 L 34,38 L 34,40 L 14,40 z" />
 </vector>

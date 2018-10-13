@@ -21,13 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@string/round_length_label"/>
+            android:text="@string/round_length_label" />
 
         <SeekBar
             android:id="@+id/round_length"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="6"/>
+            android:max="6" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +46,7 @@
             android:layout_weight="1"
             android:onClick="startFeedback"
             android:text="@string/feedback_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/export_mail_button"
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:onClick="mailExport"
             android:text="@string/export_mail_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:onClick="runImport"
             android:text="@string/import_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/export_button"
@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:onClick="runExport"
             android:text="@string/export_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,12 +102,12 @@
             android:layout_weight="1"
             android:onClick="startNewCard"
             android:text="@string/new_card_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,7 +126,7 @@
             android:layout_weight="1"
             android:onClick="startGame"
             android:text="@string/play_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/reset_button"
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:onClick="startNewGame"
             android:text="@string/new_game_button"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
