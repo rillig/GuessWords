@@ -94,10 +94,11 @@ fun GameState.save(ctx: Context) {
 }
 
 interface Repo : AutoCloseable {
-    fun add(card: Card)
-    fun load(language: String): List<Card>
+    fun loadLanguage(language: String): List<Card>
     fun loadAll(): List<Card>
+    fun loadAllIncludingDeleted(): List<Card>
     fun merge(cards: List<Card>, commit: Boolean): MergeStats
+    fun get(uuid: UUID): Card
 }
 
 data class MergeStats(
@@ -130,15 +131,15 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = TODO("not implemented")
 
-    override fun add(card: Card) = add(writableDatabase, card)
-
     private fun add(db: SQLiteDatabase, card: Card) {
         db.insert("question", null, card.toContentValues())
     }
 
-    override fun load(language: String) = load("language = ? AND term IS NOT NULL", language)
+    override fun loadLanguage(language: String) = load("language = ? AND term IS NOT NULL", language)
 
-    override fun loadAll() = load(null)
+    override fun loadAll() = load("term IS NOT NULL AND term <> ''")
+
+    override fun loadAllIncludingDeleted() = load(null)
 
     private fun load(uuid: UUID): Card? {
         readableDatabase
@@ -176,7 +177,7 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
             if (existing == null) {
                 added++
                 if (commit) {
-                    add(card)
+                    add(writableDatabase, card)
                 }
             } else if (existing == card) {
                 unchanged++
@@ -195,6 +196,8 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
 
         return MergeStats(added, removed, changed, unchanged)
     }
+
+    override fun get(uuid: UUID) = load(uuid)!!
 
     private fun update(card: Card) {
         writableDatabase.update("question", card.toContentValues(), "uuid = ?", arrayOf(card.uuid.toString()))

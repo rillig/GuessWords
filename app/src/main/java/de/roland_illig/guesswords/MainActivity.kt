@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun runExport(view: View) {
-        val cards = repo(this).use { it.loadAll() }
+        val cards = repo(this).use { it.loadAllIncludingDeleted() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun mailExport(view: View) {
-        val cards = repo(this).use { it.loadAll() }
+        val cards = repo(this).use { it.loadAllIncludingDeleted() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
 
     fun startGame(view: View) {
         if (state.currentCard() == null) {
-            val cards = repo(this).use { it.load(Locale.getDefault().language) }
+            val cards = repo(this).use { it.loadLanguage(Locale.getDefault().language) }
             state.addCards(cards.shuffled())
         }
 
