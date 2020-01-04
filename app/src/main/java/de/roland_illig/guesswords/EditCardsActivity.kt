@@ -13,23 +13,25 @@ import android.widget.TextView
 class EditCardsActivity : AppCompatActivity() {
 
     private var cards: List<Card>? = null
+    private lateinit var cardsAdapter: CardsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_cards)
 
-        cards = repo(this).loadAll()
+        cardsAdapter = CardsAdapter()
 
         val rv = RecyclerView(this)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = CardsAdapter()
+        rv.adapter = cardsAdapter
         setContentView(rv)
     }
 
     override fun onResume() {
         super.onResume()
-        if (cards == null) cards = repo(this).loadAll()
+        cards = withRepo(this) { it.loadAll() }
+        cardsAdapter.notifyDataSetChanged()
     }
 
     override fun onPause() {
@@ -42,10 +44,10 @@ class EditCardsActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             RowHolder(layoutInflater.inflate(R.layout.row_edit_cards_card, parent, false))
 
+        override fun getItemCount() = cards?.size ?: 0
+
         override fun onBindViewHolder(holder: RowHolder, position: Int) =
             holder.bindModel(cards!![position], position)
-
-        override fun getItemCount() = cards?.size ?: 0
     }
 
     inner class RowHolder(private val row: View) : RecyclerView.ViewHolder(row) {

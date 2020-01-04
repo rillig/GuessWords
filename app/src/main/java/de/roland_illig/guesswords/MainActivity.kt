@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         val cards = parseCards(text)
         if (cards.isEmpty()) return null
 
-        val stats = repo(this).use { it.merge(cards, false) }
+        val stats = withRepo(this) { it.merge(cards, false) }
         return Pair(cards, stats)
     }
 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 stats.added, stats.changed, stats.unchanged, stats.removed
             )
             val doImport: (DialogInterface, Int) -> Unit = { _, _ ->
-                inBackground<Unit>({ repo(this).use { it.merge(cards, true) } })
+                inBackground<Unit>({ withRepo(this) { it.merge(cards, true) } })
             }
 
             AlertDialog.Builder(this)
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun runExport(view: View) {
-        val cards = repo(this).use { it.loadAllIncludingDeleted() }
+        val cards = withRepo(this) { it.loadAllIncludingDeleted() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun mailExport(view: View) {
-        val cards = repo(this).use { it.loadAllIncludingDeleted() }
+        val cards = withRepo(this){ it.loadAllIncludingDeleted() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
@@ -236,7 +236,7 @@ class MainActivity : AppCompatActivity() {
 
     fun startGame(view: View) {
         if (state.currentCard() == null) {
-            val cards = repo(this).use { it.loadLanguage(Locale.getDefault().language) }
+            val cards = withRepo(this) { it.loadLanguage(Locale.getDefault().language) }
             state.addCards(cards.shuffled())
         }
 

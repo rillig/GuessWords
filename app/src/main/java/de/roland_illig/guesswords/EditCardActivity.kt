@@ -27,7 +27,7 @@ class EditCardActivity : AppCompatActivity() {
 
     private fun loadCard(uuid: UUID?) {
         val card = if (uuid != null) {
-            repo(this).get(uuid)
+            withRepo(this) { it.get(uuid) }
         } else {
             Card(
                 UUID.randomUUID(), Locale.getDefault().language,
@@ -63,9 +63,7 @@ class EditCardActivity : AppCompatActivity() {
             text(R.id.forbidden5)
         )
 
-        repo(this).use {
-            it.merge(listOf(card), true)
-        }
+        withRepo(this) { it.merge(listOf(card), true) }
 
         finish()
     }

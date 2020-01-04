@@ -109,7 +109,7 @@ data class MergeStats(
     val unchanged: Int
 )
 
-fun repo(ctx: Context): Repo = SQLiteRepo(ctx)
+fun <T> withRepo(ctx: Context, action: (Repo) -> T): T = SQLiteRepo(ctx).use(action)
 
 class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), Repo {
 
