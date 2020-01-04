@@ -189,6 +189,8 @@ class MainActivity : AppCompatActivity() {
 
     fun startNewCard(view: View) = startActivity(Intent(this, EditCardActivity::class.java))
 
+    fun startManageCards(view: View) = startActivity(Intent(this, EditCardsActivity::class.java))
+
     fun startNewGame(view: View) {
         state = GameState(state.secondsPerRound)
         startGame(view)

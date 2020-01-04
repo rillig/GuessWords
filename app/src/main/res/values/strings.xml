@@ -14,7 +14,8 @@
     <string name="export_mail_button">Mail export</string>
     <string name="import_button">Import</string>
     <string name="export_button">Export</string>
-    <string name="new_card_button">New Card</string>
+    <string name="new_card_button">New card</string>
+    <string name="manage_cards_button">Manage cards</string>
     <string name="play_button">Play</string>
     <string name="new_game_button">New game</string>
 

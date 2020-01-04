@@ -106,10 +106,15 @@
             android:text="@string/new_card_button"
             android:textSize="20sp" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+        <!-- TODO: Properly align the text vertically -->
+        <Button
+            android:id="@+id/manage_cards_button"
+            android:layout_width="0dp"
+            android:layout_height="96sp"
+            android:layout_weight="1"
+            android:onClick="startManageCards"
+            android:text="@string/manage_cards_button"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout

@@ -15,6 +15,7 @@
     <string name="import_button">Importieren</string>
     <string name="export_button">Exportieren</string>
     <string name="new_card_button">Neue Karte</string>
+    <string name="manage_cards_button">Karten verwalten</string>
     <string name="play_button">Spielen</string>
     <string name="new_game_button">Neues Spiel</string>
 
