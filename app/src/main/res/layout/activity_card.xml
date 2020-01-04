@@ -142,7 +142,8 @@
             android:layout_weight="1"
             android:onClick="wrongClicked"
             android:text="@string/wrong_button"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/skip_button"
@@ -151,7 +152,8 @@
             android:layout_weight="1"
             android:onClick="skipClicked"
             android:text="@string/skip_button"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/correct_button"
@@ -160,7 +162,8 @@
             android:layout_weight="1"
             android:onClick="correctClicked"
             android:text="@string/correct_button"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
