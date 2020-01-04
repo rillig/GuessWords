@@ -137,7 +137,7 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
 
     override fun loadLanguage(language: String) = load("language = ? AND term IS NOT NULL AND term <> ''", language)
 
-    override fun loadAll() = load("term IS NOT NULL AND term <> ''")
+    override fun loadAll() = load("term IS NOT NULL AND term <> '' ORDER BY term")
 
     override fun loadAllIncludingDeleted() = load(null)
 
