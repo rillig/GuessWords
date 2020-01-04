@@ -45,7 +45,7 @@ class EditCardsActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: RowHolder, position: Int) =
             holder.bindModel(cards!![position], position)
 
-        override fun getItemCount() = cards!!.size
+        override fun getItemCount() = cards?.size ?: 0
     }
 
     inner class RowHolder(private val row: View) : RecyclerView.ViewHolder(row) {
