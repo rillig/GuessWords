@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,20 +16,20 @@ import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private val roundLengths = listOf(
-            Pair(30, R.string.round_length_30s),
-            Pair(60, R.string.round_length_60s),
-            Pair(90, R.string.round_length_90s),
-            Pair(120, R.string.round_length_120s),
-            Pair(180, R.string.round_length_180s),
-            Pair(300, R.string.round_length_300s),
-            Pair(600, R.string.round_length_600s))
+        Pair(30, R.string.round_length_30s),
+        Pair(60, R.string.round_length_60s),
+        Pair(90, R.string.round_length_90s),
+        Pair(120, R.string.round_length_120s),
+        Pair(180, R.string.round_length_180s),
+        Pair(300, R.string.round_length_300s),
+        Pair(600, R.string.round_length_600s)
+    )
 
     private lateinit var state: GameState
 
@@ -105,21 +106,31 @@ class MainActivity : AppCompatActivity() {
 
     private fun runImportSimulate(text: String): Pair<List<Card>, MergeStats>? {
         val cards = parseCards(text)
-        return if (cards.isNotEmpty()) Pair(cards, repo(this).use { it.merge(cards, false) }) else null
+        if (cards.isEmpty()) return null
+
+        val stats = repo(this).use { it.merge(cards, false) }
+        return Pair(cards, stats)
     }
 
     private fun runImportConfirm(result: Pair<List<Card>, MergeStats>?) {
         if (result != null) {
             val (cards, stats) = result
-            val message = String.format(getString(R.string.import_stats),
-                    stats.added, stats.changed, stats.unchanged, stats.removed)
+            val message = String.format(
+                getString(R.string.import_stats),
+                stats.added, stats.changed, stats.unchanged, stats.removed
+            )
+            val doImport: (DialogInterface, Int) -> Unit = { _, _ ->
+                inBackground<Unit>({ repo(this).use { it.merge(cards, true) } })
+            }
+
             AlertDialog.Builder(this)
-                    .setMessage(message)
-                    .setPositiveButton(getString(R.string.import_button)) { _, _ -> inBackground<Unit>({ repo(this).use { it.merge(cards, true) } }) }
-                    .setCancelable(true)
-                    .show()
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.import_button), doImport)
+                .setCancelable(true)
+                .show()
         } else {
-            Toast.makeText(this, getString(R.string.import_no_cards_found), Toast.LENGTH_LONG).show()
+            val msg = getString(R.string.import_no_cards_found)
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -130,24 +141,38 @@ class MainActivity : AppCompatActivity() {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
         }
         writeLine(
-                getString(R.string.csv_uuid),
-                getString(R.string.csv_language),
-                getString(R.string.csv_term),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden))
+            getString(R.string.csv_uuid),
+            getString(R.string.csv_language),
+            getString(R.string.csv_term),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden)
+        )
         cards.forEach {
             it.apply {
-                writeLine(uuid, language, term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
+                writeLine(
+                    uuid,
+                    language,
+                    term,
+                    forbidden1,
+                    forbidden2,
+                    forbidden3,
+                    forbidden4,
+                    forbidden5
+                )
             }
         }
 
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.primaryClip = ClipData.newPlainText(getString(R.string.app_name), sb)
 
-        val msg = resources.getQuantityString(R.plurals.exported_cards_notification, cards.size, cards.size)
+        val msg = resources.getQuantityString(
+            R.plurals.exported_cards_notification,
+            cards.size,
+            cards.size
+        )
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
@@ -158,17 +183,27 @@ class MainActivity : AppCompatActivity() {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
         }
         writeLine(
-                getString(R.string.csv_uuid),
-                getString(R.string.csv_language),
-                getString(R.string.csv_term),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden),
-                getString(R.string.csv_forbidden))
+            getString(R.string.csv_uuid),
+            getString(R.string.csv_language),
+            getString(R.string.csv_term),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden),
+            getString(R.string.csv_forbidden)
+        )
         cards.forEach {
             it.apply {
-                writeLine(uuid, language, term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
+                writeLine(
+                    uuid,
+                    language,
+                    term,
+                    forbidden1,
+                    forbidden2,
+                    forbidden3,
+                    forbidden4,
+                    forbidden5
+                )
             }
         }
 
@@ -183,7 +218,10 @@ class MainActivity : AppCompatActivity() {
         intent.type = "text/csv; charset=UTF-16LE"
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_mail_subject))
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.export_mail_body))
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://de.roland_illig.guesswords/${fileName}"))
+        intent.putExtra(
+            Intent.EXTRA_STREAM,
+            Uri.parse("content://de.roland_illig.guesswords/${fileName}")
+        )
         startActivity(intent)
     }
 

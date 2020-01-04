@@ -16,7 +16,13 @@ class ExportContentProvider : ContentProvider() {
 
     override fun onCreate() = true
 
-    override fun query(uri: Uri?, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?) = null
+    override fun query(
+        uri: Uri?,
+        projection: Array<out String>?,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+        sortOrder: String?
+    ) = null
 
     override fun getType(uri: Uri?) = "text/csv; charset=UTF-8"
 
@@ -30,7 +36,13 @@ class ExportContentProvider : ContentProvider() {
 
     override fun insert(uri: Uri?, values: ContentValues?) = TODO("not implemented")
 
-    override fun update(uri: Uri?, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?) = TODO("not implemented")
+    override fun update(
+        uri: Uri?,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<out String>?
+    ) = TODO("not implemented")
 
-    override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?) = TODO("not implemented")
+    override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?) =
+        TODO("not implemented")
 }

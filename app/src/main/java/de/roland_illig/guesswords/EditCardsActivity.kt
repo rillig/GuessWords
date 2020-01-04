@@ -40,10 +40,10 @@ class EditCardsActivity : AppCompatActivity() {
     inner class CardsAdapter : RecyclerView.Adapter<RowHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                RowHolder(layoutInflater.inflate(R.layout.row_edit_cards_card, parent, false))
+            RowHolder(layoutInflater.inflate(R.layout.row_edit_cards_card, parent, false))
 
         override fun onBindViewHolder(holder: RowHolder, position: Int) =
-                holder.bindModel(cards!![position], position)
+            holder.bindModel(cards!![position], position)
 
         override fun getItemCount() = cards!!.size
     }

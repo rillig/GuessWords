@@ -9,17 +9,18 @@ import android.os.AsyncTask
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
-import java.util.UUID
+import java.util.*
 
 data class Card(
-        val uuid: UUID,
-        val language: String,
-        val term: String,
-        val forbidden1: String,
-        val forbidden2: String,
-        val forbidden3: String,
-        val forbidden4: String,
-        val forbidden5: String) : Serializable
+    val uuid: UUID,
+    val language: String,
+    val term: String,
+    val forbidden1: String,
+    val forbidden2: String,
+    val forbidden3: String,
+    val forbidden4: String,
+    val forbidden5: String
+) : Serializable
 
 enum class Player {
     A, B;
@@ -102,17 +103,19 @@ interface Repo : AutoCloseable {
 }
 
 data class MergeStats(
-        val added: Int,
-        val removed: Int,
-        val changed: Int,
-        val unchanged: Int)
+    val added: Int,
+    val removed: Int,
+    val changed: Int,
+    val unchanged: Int
+)
 
 fun repo(ctx: Context): Repo = SQLiteRepo(ctx)
 
 class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1), Repo {
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE question (
                 uuid       TEXT PRIMARY KEY ON CONFLICT REPLACE,
                 language   TEXT NOT NULL,
@@ -122,20 +125,24 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
                 forbidden3 TEXT NOT NULL,
                 forbidden4 TEXT NOT NULL,
                 forbidden5 TEXT NOT NULL
-            )""")
+            )
+            """
+        )
 
         for (card in predefinedCards()) {
             add(db, card)
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = TODO("not implemented")
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) =
+        TODO("not implemented")
 
     private fun add(db: SQLiteDatabase, card: Card) {
         db.insert("question", null, card.toContentValues())
     }
 
-    override fun loadLanguage(language: String) = load("language = ? AND term IS NOT NULL AND term <> ''", language)
+    override fun loadLanguage(language: String) =
+        load("language = ? AND term IS NOT NULL AND term <> ''", language)
 
     override fun loadAll() = load("term IS NOT NULL AND term <> '' ORDER BY term")
 
@@ -143,19 +150,20 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
 
     private fun load(uuid: UUID): Card? {
         readableDatabase
-                .query("question", columns, "uuid = ?", arrayOf(uuid.toString()), null, null, null)
-                .use { return if (it.moveToNext()) it.toCard() else null }
+            .query("question", columns, "uuid = ?", arrayOf(uuid.toString()), null, null, null)
+            .use { return if (it.moveToNext()) it.toCard() else null }
     }
 
     private fun load(selection: String?, vararg selectionArgs: String): List<Card> {
         val cursor = readableDatabase.query(
-                "question",
-                columns,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null)
+            "question",
+            columns,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
 
         val cards = mutableListOf<Card>()
         cursor.use {
@@ -200,18 +208,24 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
     override fun get(uuid: UUID) = load(uuid)!!
 
     private fun update(card: Card) {
-        writableDatabase.update("question", card.toContentValues(), "uuid = ?", arrayOf(card.uuid.toString()))
+        writableDatabase.update(
+            "question",
+            card.toContentValues(),
+            "uuid = ?",
+            arrayOf(card.uuid.toString())
+        )
     }
 
     private val columns = arrayOf(
-            "uuid",
-            "language",
-            "term",
-            "forbidden1",
-            "forbidden2",
-            "forbidden3",
-            "forbidden4",
-            "forbidden5")
+        "uuid",
+        "language",
+        "term",
+        "forbidden1",
+        "forbidden2",
+        "forbidden3",
+        "forbidden4",
+        "forbidden5"
+    )
 
     private fun Card.toContentValues() = ContentValues().apply {
         put("uuid", uuid.toString())
@@ -225,26 +239,76 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
     }
 
     private fun Cursor.toCard() = Card(
-            UUID.fromString(getString(0)),
-            getString(1),
-            getString(2),
-            getString(3),
-            getString(4),
-            getString(5),
-            getString(6),
-            getString(7))
+        UUID.fromString(getString(0)),
+        getString(1),
+        getString(2),
+        getString(3),
+        getString(4),
+        getString(5),
+        getString(6),
+        getString(7)
+    )
 }
 
 fun predefinedCards(): List<Card> {
 
-    fun de(uuid: String, term: String, forbidden1: String, forbidden2: String, forbidden3: String, forbidden4: String, forbidden5: String) =
-            Card(UUID.fromString(uuid), "de", term, forbidden1, forbidden2, forbidden3, forbidden4, forbidden5)
+    fun de(
+        uuid: String,
+        term: String,
+        forbidden1: String,
+        forbidden2: String,
+        forbidden3: String,
+        forbidden4: String,
+        forbidden5: String
+    ) = Card(
+        UUID.fromString(uuid),
+        "de",
+        term,
+        forbidden1,
+        forbidden2,
+        forbidden3,
+        forbidden4,
+        forbidden5
+    )
 
     return listOf(
-            de("7425a3b8-1052-4712-c9cd-ae9ab7980001", "Krone", "Baum", "König", "Kopf", "Zahn", "Dänemark"),
-            de("7425a3b8-1052-4712-c9cd-ae9ab7980002", "Hund", "Katze", "Haustier", "Bello", "Goofy", "bellen"),
-            de("7425a3b8-1052-4712-c9cd-ae9ab7980003", "Strand", "Sandburg", "Meer", "Ostsee", "Lagerfeuer", "Düne"),
-            de("7425a3b8-1052-4712-c9cd-ae9ab7980004", "Hausboot", "Wasser", "Fluss", "wohnen", "Gebäude", "schwimmen"))
+        de(
+            "7425a3b8-1052-4712-c9cd-ae9ab7980001",
+            "Krone",
+            "Baum",
+            "König",
+            "Kopf",
+            "Zahn",
+            "Dänemark"
+        ),
+        de(
+            "7425a3b8-1052-4712-c9cd-ae9ab7980002",
+            "Hund",
+            "Katze",
+            "Haustier",
+            "Bello",
+            "Goofy",
+            "bellen"
+        ),
+        de(
+            "7425a3b8-1052-4712-c9cd-ae9ab7980003",
+            "Strand",
+            "Sandburg",
+            "Meer",
+            "Ostsee",
+            "Lagerfeuer",
+            "Düne"
+        ),
+        de(
+            "7425a3b8-1052-4712-c9cd-ae9ab7980004",
+            "Hausboot",
+            "Wasser",
+            "Fluss",
+            "wohnen",
+            "Gebäude",
+            "schwimmen"
+        )
+    )
 }
 
 fun parseCards(text: CharSequence): List<Card> {
@@ -253,7 +317,16 @@ fun parseCards(text: CharSequence): List<Card> {
         val cells = line.split(Regex("[,;\t] *+")).map(String::trim)
         if (cells.size >= 8 && (cells[0] == "" || cells[0].length == 36)) {
             val uuid = if (cells[0] == "") UUID.randomUUID() else UUID.fromString(cells[0])
-            cards += Card(uuid, cells[1], cells[2], cells[3], cells[4], cells[5], cells[6], cells[7])
+            cards += Card(
+                uuid,
+                cells[1],
+                cells[2],
+                cells[3],
+                cells[4],
+                cells[5],
+                cells[6],
+                cells[7]
+            )
         }
     }
     return cards

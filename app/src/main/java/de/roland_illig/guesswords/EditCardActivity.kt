@@ -6,8 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
-import java.util.Locale
-import java.util.UUID
+import java.util.*
 
 class EditCardActivity : AppCompatActivity() {
 
@@ -30,8 +29,10 @@ class EditCardActivity : AppCompatActivity() {
         val card = if (uuid != null) {
             repo(this).get(uuid)
         } else {
-            Card(UUID.randomUUID(), Locale.getDefault().language,
-                    "", "", "", "", "", "")
+            Card(
+                UUID.randomUUID(), Locale.getDefault().language,
+                "", "", "", "", "", ""
+            )
         }
 
         fun setText(resource: Int, text: String) {
@@ -52,14 +53,14 @@ class EditCardActivity : AppCompatActivity() {
         fun text(resource: Int): String = findViewById<EditText>(resource).text.toString()
 
         val card = Card(
-                card.uuid,
-                card.language,
-                text(R.id.term),
-                text(R.id.forbidden1),
-                text(R.id.forbidden2),
-                text(R.id.forbidden3),
-                text(R.id.forbidden4),
-                text(R.id.forbidden5)
+            card.uuid,
+            card.language,
+            text(R.id.term),
+            text(R.id.forbidden1),
+            text(R.id.forbidden2),
+            text(R.id.forbidden3),
+            text(R.id.forbidden4),
+            text(R.id.forbidden5)
         )
 
         repo(this).use {
