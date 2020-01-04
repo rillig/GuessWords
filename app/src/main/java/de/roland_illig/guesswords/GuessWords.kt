@@ -57,12 +57,12 @@ class GameState(secondsPerRound: Int = 120) : Serializable {
     }
 
     fun nextCard() {
-        if (!remainingCards.isEmpty())
+        if (remainingCards.isNotEmpty())
             remainingCards.removeAt(remainingCards.lastIndex)
     }
 
     fun timePasses(millis: Int) {
-        remainingMillis = Math.max(0, remainingMillis - millis)
+        remainingMillis = 0.coerceAtLeast(remainingMillis - millis)
     }
 
     fun nextTeam() {
@@ -132,7 +132,7 @@ class SQLiteRepo(ctx: Context) : SQLiteOpenHelper(ctx, "cards.sqlite3", null, 1)
 
     override fun add(card: Card) = add(writableDatabase, card)
 
-    fun add(db: SQLiteDatabase, card: Card) {
+    private fun add(db: SQLiteDatabase, card: Card) {
         db.insert("question", null, card.toContentValues())
     }
 
