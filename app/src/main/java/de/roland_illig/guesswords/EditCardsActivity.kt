@@ -2,8 +2,8 @@ package de.roland_illig.guesswords
 
 import android.content.Intent
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -64,7 +64,7 @@ class EditCardsActivity : AppCompatActivity() {
         }
 
         private fun rainbowColor(position: Int): Int {
-            val hue = ((position * 47).and(0x7FFF_FFFF) % 360).toFloat()
+            val hue = ((position * 23).and(0x7FFF_FFFF) % 360).toFloat()
             val hsv = arrayOf(hue, 1.0f, 1.0f).toFloatArray()
             return Color.HSVToColor(0x40, hsv)
         }
