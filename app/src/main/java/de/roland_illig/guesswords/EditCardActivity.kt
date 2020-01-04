@@ -3,6 +3,7 @@ package de.roland_illig.guesswords
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import java.util.Locale
@@ -17,6 +18,12 @@ class EditCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_card)
 
         loadCard(intent.getSerializableExtra("uuid") as UUID?)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (card.term != "")
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
     private fun loadCard(uuid: UUID?) {
