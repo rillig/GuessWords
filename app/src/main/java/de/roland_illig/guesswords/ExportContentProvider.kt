@@ -10,9 +10,8 @@ import java.io.FileNotFoundException
 
 class ExportContentProvider : ContentProvider() {
 
-    private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).also {
-        it.addURI("de.roland_illig.guesswords", "*", 1)
-    }
+    private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+        .also { it.addURI("de.roland_illig.guesswords", "*", 12345) }
 
     override fun onCreate() = true
 
@@ -27,14 +26,13 @@ class ExportContentProvider : ContentProvider() {
     override fun getType(uri: Uri?) = "text/csv; charset=UTF-16LE"
 
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor {
-        if (uriMatcher.match(uri) != 1) {
-            throw FileNotFoundException(uri.toString())
-        }
-        val location = File(context.cacheDir.toString(), uri.lastPathSegment)
+        uriMatcher.match(uri) == 12345 || throw FileNotFoundException("$uri")
+        val location = File("${context!!.cacheDir}", uri.lastPathSegment)
         return ParcelFileDescriptor.open(location, ParcelFileDescriptor.MODE_READ_ONLY)
     }
 
-    override fun insert(uri: Uri?, values: ContentValues?) = TODO("not implemented")
+    override fun insert(uri: Uri?, values: ContentValues?) =
+        TODO("not implemented")
 
     override fun update(
         uri: Uri?,
