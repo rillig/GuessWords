@@ -24,7 +24,7 @@ class ExportContentProvider : ContentProvider() {
         sortOrder: String?
     ) = null
 
-    override fun getType(uri: Uri?) = "text/csv; charset=UTF-8"
+    override fun getType(uri: Uri?) = "text/csv; charset=UTF-16LE"
 
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor {
         if (uriMatcher.match(uri) != 1) {
