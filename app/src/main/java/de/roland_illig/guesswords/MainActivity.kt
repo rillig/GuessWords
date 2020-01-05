@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun mailExport(view: View) {
-        val cards = withRepo(this){ it.loadAllIncludingDeleted() }
+        val cards = withRepo(this) { it.loadAllIncludingDeleted() }
         val sb = StringBuilder("\uFEFF")
         fun writeLine(vararg elements: Any) {
             sb.append(elements.joinToString(separator = "\t", postfix = "\r\n"))
