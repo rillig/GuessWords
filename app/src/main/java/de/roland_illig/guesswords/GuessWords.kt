@@ -30,16 +30,18 @@ enum class Player {
 
 class GameState(secondsPerRound: Int = 120) : Serializable {
 
-    var turn = Player.A; private set
-    private val score = intArrayOf(0, 0)
-    val totalMillis get() = secondsPerRound * 1000
-    private val remainingCards = mutableListOf<Card>()
     var secondsPerRound = secondsPerRound
         set(value) {
-            field = value; remainingMillis = totalMillis
+            field = value
+            remainingMillis = totalMillis
         }
+    val totalMillis get() = secondsPerRound * 1000
     var remainingMillis = totalMillis; private set
 
+    var turn = Player.A; private set
+    private val remainingCards = mutableListOf<Card>()
+
+    private val score = intArrayOf(0, 0)
     val scoreA get() = score[0]
     val scoreB get() = score[1]
 
