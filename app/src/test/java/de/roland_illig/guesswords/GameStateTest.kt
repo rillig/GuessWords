@@ -8,13 +8,14 @@ class GameStateTest {
     @Test
     fun `percentage is reported correctly`() {
         val cards = listOf(
-                Card(UUID.randomUUID(), "de", "Krone", listOf("Baum", "König", "Schmuck", "aufsetzen", "richten")),
-                Card(UUID.randomUUID(), "de", "Hunger", listOf("Essen", "Bauch", "Magen", "Durst", "Dritte Welt")),
-                Card(UUID.randomUUID(), "de", "Atom", listOf("klein", "winzig", "unteilbar", "Teilchen", "Element"))
+                Card(UUID.randomUUID(), "de", "Krone", "Baum", "König", "Schmuck", "aufsetzen", "richten"),
+                Card(UUID.randomUUID(), "de", "Hunger", "Essen", "Bauch", "Magen", "Durst", "Dritte Welt"),
+                Card(UUID.randomUUID(), "de", "Atom", "klein", "winzig", "unteilbar", "Teilchen", "Element")
         )
-        val state = GameState(120 * 1000, cards)
+        val state = GameState(120_000)
+        state.addCards(cards)
 
         // See https://github.com/memoizr/assertk-core
-        assert that state.over() isEqualTo false
+        assert that state.remainingMillis isEqualTo 120_000
     }
 }
