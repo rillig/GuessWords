@@ -1,5 +1,6 @@
 package de.roland_illig.guesswords
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -24,6 +25,7 @@ class EditCardsActivity : AppCompatActivity() {
         rv.adapter = cardsAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         cards = withRepo(this) { it.loadAll() }
@@ -56,10 +58,10 @@ class EditCardsActivity : AppCompatActivity() {
         fun bindModel(card: Card, position: Int) {
             label.text = card.term
             row.setBackgroundColor(rainbowColor(position))
-            row.setOnClickListener(::click)
+            row.setOnClickListener { click() }
         }
 
-        private fun click(view: View) {
+        private fun click() {
             val intent = Intent(this@EditCardsActivity, EditCardActivity::class.java)
             intent.putExtra("uuid", cards!![adapterPosition].uuid)
             startActivity(intent)
