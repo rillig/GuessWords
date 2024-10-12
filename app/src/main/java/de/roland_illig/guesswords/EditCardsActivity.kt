@@ -37,7 +37,7 @@ class EditCardsActivity : AppCompatActivity() {
         cards = null
     }
 
-    fun newCardClicked(view: View) {
+    fun startNewCard(view: View) {
         startActivity(Intent(this, EditCardActivity::class.java))
     }
 
