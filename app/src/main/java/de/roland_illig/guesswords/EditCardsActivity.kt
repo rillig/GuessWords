@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.util.UUID
 
 class EditCardsActivity : AppCompatActivity() {
 
@@ -41,6 +42,12 @@ class EditCardsActivity : AppCompatActivity() {
         startActivity(Intent(this, EditCardActivity::class.java))
     }
 
+    private fun startEditCard(uuid: UUID) {
+        val intent = Intent(this, EditCardActivity::class.java)
+        intent.putExtra("uuid", uuid)
+        startActivity(intent)
+    }
+
     inner class CardsAdapter : RecyclerView.Adapter<RowHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -58,13 +65,7 @@ class EditCardsActivity : AppCompatActivity() {
         fun bindModel(card: Card, position: Int) {
             label.text = card.term
             row.setBackgroundColor(rainbowColor(position))
-            row.setOnClickListener { click() }
-        }
-
-        private fun click() {
-            val intent = Intent(this@EditCardsActivity, EditCardActivity::class.java)
-            intent.putExtra("uuid", cards!![adapterPosition].uuid)
-            startActivity(intent)
+            row.setOnClickListener { startEditCard(cards!![adapterPosition].uuid) }
         }
 
         private fun rainbowColor(position: Int): Int {
